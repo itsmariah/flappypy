@@ -28,6 +28,12 @@ from pipe import Cano
 from score import Placar
 
 
+def calcular_velocidade_cano(pontos):
+    nivel = pontos // PONTOS_POR_NIVEL
+    velocidade = VELOCIDADE_CANO_INICIAL + nivel * INCREMENTO_VELOCIDADE_CANO
+    return min(velocidade, VELOCIDADE_CANO_MAXIMA)
+
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -141,7 +147,7 @@ class Game:
         if self.estado != ESTADO_JOGANDO:
             return
 
-        velocidade_atual = self._calcular_velocidade_cano()
+        velocidade_atual = calcular_velocidade_cano(self.placar.pontos)
         self.fundo.atualizar()
         self.chao.atualizar(velocidade_atual)
         self.passaro.atualizar()
@@ -150,11 +156,6 @@ class Game:
             self.estado = ESTADO_GAME_OVER
             self.audio.tocar_fim_de_jogo()
         self._atualizar_canos(velocidade_atual)
-
-    def _calcular_velocidade_cano(self):
-        nivel = self.placar.pontos // PONTOS_POR_NIVEL
-        velocidade = VELOCIDADE_CANO_INICIAL + nivel * INCREMENTO_VELOCIDADE_CANO
-        return min(velocidade, VELOCIDADE_CANO_MAXIMA)
 
     def _atualizar_canos(self, velocidade_atual):
         self.frames_desde_ultimo_cano += 1

@@ -2,6 +2,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.13-blue)
 ![Pygame](https://img.shields.io/badge/pygame-2.6.1-green)
+![Tests](https://img.shields.io/badge/tests-36%20passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 Um clone do clássico *Flappy Bird* feito em Python com [Pygame](https://www.pygame.org/), construído do zero como projeto de estudo de arquitetura de software aplicada a jogos.
@@ -59,6 +60,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 - Estados do jogo (`ESTADO_MENU`, `ESTADO_JOGANDO`, `ESTADO_GAME_OVER`, etc.) são simples constantes de string, não um padrão *State* completo — decisão deliberada para manter a complexidade proporcional ao tamanho do projeto.
 - A fonte pixelada não tem glifos de emoji, então os ícones (lápis, alto-falante, engrenagem) são desenhados com `pygame.draw` (polígonos simples) em vez de caracteres de fonte.
 - Telas que podem levar à edição do nome (menu e configurações) guardam de onde vieram (`origem_estado_nome`) pra saber pra onde voltar ao confirmar — evita hardcode de navegação.
+- A fórmula de dificuldade progressiva vive numa função de módulo (`game.calcular_velocidade_cano`), não num método da classe `Game` — assim é testável isoladamente, sem precisar instanciar o jogo inteiro (janela, áudio, arquivos).
 
 ## Tecnologias
 
@@ -82,6 +84,15 @@ python src/main.py
 
 **Controles:** barra de espaço para pular / começar / reiniciar; mouse para os botões, ícones e cor do título.
 
+## Testes
+
+O projeto tem 36 testes automatizados (`pytest`) cobrindo a lógica pura do jogo (física do pássaro, geometria dos canos, colisão, persistência de nome/recorde, fórmula de dificuldade) — todos rodam sem abrir janela, usando o driver de vídeo "dummy" do SDL.
+
+```bash
+pip install -r requirements-dev.txt
+pytest -v
+```
+
 ## Estrutura de pastas
 
 ```
@@ -93,7 +104,9 @@ flappypy/
 ├── data/               # recorde e nome do jogador salvos em disco (gerado em runtime, fora do controle de versão)
 ├── docs/               # screenshots usados neste README
 ├── src/                # código-fonte
-└── requirements.txt
+├── tests/              # testes automatizados (pytest)
+├── requirements.txt
+└── requirements-dev.txt
 ```
 
 ## Roadmap

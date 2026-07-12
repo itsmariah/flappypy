@@ -137,6 +137,7 @@ class Game:
             return
 
         self.fundo.atualizar()
+        self.chao.atualizar()
         self.passaro.atualizar()
         if colidiu(self.passaro.obter_retangulo(), self.chao.obter_retangulo()):
             self.passaro.pousar(self.chao.y)

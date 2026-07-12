@@ -43,7 +43,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `bird.py` | Física, animação e desenho do pássaro |
 | `background.py` | Rolagem contínua (parallax) do céu |
 | `pipe.py` | Geração, movimento, desenho e detecção de "ultrapassado" de cada par de canos |
-| `ground.py` | Posição e desenho (tiled) do chão |
+| `ground.py` | Posição, rolagem (tiled) e desenho do chão, na mesma velocidade dos canos |
 | `collision.py` | Função genérica de colisão entre retângulos, reaproveitada para chão e canos |
 | `audio.py` | Carregamento, volume e reprodução dos efeitos sonoros |
 | `score.py` | Contagem/exibição da pontuação e persistência do recorde em disco |
@@ -102,8 +102,9 @@ flappypy/
 - [x] Recorde persistente entre execuções
 - [x] Ajuste fino de física (gravidade/impulso) para uma sensação de jogo mais suave
 - [x] Identificação do jogador (nome editável) e tela de configurações (volume, cor do título, zerar recorde)
+- [x] Chão com parallax scrolling (mesma velocidade dos canos)
 
-Todos os itens planejados inicialmente foram concluídos. Ideias para uma próxima fase: chão com parallax, dificuldade progressiva (canos mais rápidos com o tempo), recorde por jogador (hoje é um único arquivo global).
+Todos os itens planejados inicialmente foram concluídos. Ideias para uma próxima fase: dificuldade progressiva (canos mais rápidos com o tempo), recorde por jogador (hoje é um único arquivo global).
 
 ## Créditos
 

@@ -2,14 +2,14 @@ import os
 
 import pygame
 
-from constantes import CAMINHO_RECORDE, COR_BRANCO, TAMANHO_FONTE_PLACAR
+from constantes import CAMINHO_FONTE, CAMINHO_RECORDE, COR_BRANCO, TAMANHO_FONTE_PLACAR
 
 
 class Placar:
     def __init__(self):
         self.pontos = 0
         self.recorde = self._carregar_recorde()
-        self.fonte = pygame.font.SysFont(None, TAMANHO_FONTE_PLACAR)
+        self.fonte = pygame.font.Font(CAMINHO_FONTE, TAMANHO_FONTE_PLACAR)
 
     def incrementar(self):
         self.pontos += 1

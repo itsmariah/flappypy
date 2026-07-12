@@ -77,7 +77,8 @@ python src/main.py
 flappypy/
 ├── assets/
 │   ├── images/       # sprites (pássaro, canos, tiles, backgrounds)
-│   └── sounds/        # efeitos sonoros
+│   ├── sounds/        # efeitos sonoros
+│   └── fonts/          # fonte pixelada (Press Start 2P)
 ├── data/               # recorde salvo em disco (gerado em runtime, fora do controle de versão)
 ├── docs/               # screenshots usados neste README
 ├── src/                # código-fonte
@@ -98,6 +99,8 @@ Todos os itens planejados inicialmente foram concluídos. Ideias para uma próxi
 Os sprites (pássaro, canos e tiles de chão) são do pacote [Flappy Bird Assets](https://megacrash.itch.io/flappy-bird-assets), por **megacrash** (itch.io). Direitos de uso sujeitos aos termos da página original — consulte antes de reutilizar este repositório para outros fins.
 
 Os efeitos sonoros (pulo, ponto e game over) vieram do [Pixabay](https://pixabay.com), sob a licença da própria plataforma.
+
+A fonte usada na interface é [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P), do Google Fonts, licenciada sob a [SIL Open Font License](assets/fonts/OFL.txt).
 
 ## Licença
 

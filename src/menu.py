@@ -1,12 +1,12 @@
 import pygame
 
-from constantes import ALTURA_TELA, COR_BRANCO, LARGURA_TELA, TAMANHO_FONTE_PLACAR
+from constantes import ALTURA_TELA, CAMINHO_FONTE, COR_BRANCO, LARGURA_TELA, TAMANHO_FONTE_PLACAR
 
 
 class Menu:
     def __init__(self):
-        self.fonte_titulo = pygame.font.SysFont(None, TAMANHO_FONTE_PLACAR)
-        self.fonte_instrucao = pygame.font.SysFont(None, TAMANHO_FONTE_PLACAR // 2)
+        self.fonte_titulo = pygame.font.Font(CAMINHO_FONTE, TAMANHO_FONTE_PLACAR)
+        self.fonte_instrucao = pygame.font.Font(CAMINHO_FONTE, TAMANHO_FONTE_PLACAR // 2)
 
     def desenhar_tela_inicial(self, tela, recorde):
         self._desenhar_texto(tela, "Flappy Py", self.fonte_titulo, ALTURA_TELA // 2 - 40)

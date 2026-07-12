@@ -43,8 +43,11 @@ VELOCIDADE_CANO = 3
 INTERVALO_CANOS = 90
 MARGEM_GAP = 50
 
+# Fonte
+CAMINHO_FONTE = os.path.join(_PASTA_RAIZ, "assets", "fonts", "PressStart2P-Regular.ttf")
+
 # Placar
-TAMANHO_FONTE_PLACAR = 48
+TAMANHO_FONTE_PLACAR = 28
 CAMINHO_RECORDE = os.path.join(_PASTA_RAIZ, "data", "recorde.txt")
 
 # Estados do jogo

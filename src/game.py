@@ -1,10 +1,10 @@
 import pygame
 
+from background import Fundo
 from bird import Bird
 from collision import colidiu
 from constantes import (
     ALTURA_TELA,
-    COR_CEU,
     ESTADO_GAME_OVER,
     ESTADO_JOGANDO,
     ESTADO_MENU,
@@ -27,6 +27,7 @@ class Game:
         self.relogio = pygame.time.Clock()
         self.rodando = True
         self.menu = Menu()
+        self.fundo = Fundo()
         self.chao = Ground()
         self.estado = ESTADO_MENU
         self._reiniciar()
@@ -66,6 +67,7 @@ class Game:
         if self.estado != ESTADO_JOGANDO:
             return
 
+        self.fundo.atualizar()
         self.passaro.atualizar()
         if colidiu(self.passaro.obter_retangulo(), self.chao.obter_retangulo()):
             self.passaro.pousar(self.chao.y)
@@ -90,7 +92,7 @@ class Game:
         self.canos = [cano for cano in self.canos if not cano.fora_da_tela()]
 
     def _desenhar(self):
-        self.tela.fill(COR_CEU)
+        self.fundo.desenhar(self.tela)
         for cano in self.canos:
             cano.desenhar(self.tela)
         self.passaro.desenhar(self.tela)

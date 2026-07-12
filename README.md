@@ -35,6 +35,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `game.py` | Orquestra o loop principal, os estados do jogo e a interação entre entidades |
 | `constantes.py` | Toda a configuração do jogo (tamanhos, velocidades, cores, caminhos de assets) num só lugar |
 | `bird.py` | Física, animação e desenho do pássaro |
+| `background.py` | Rolagem contínua (parallax) do céu |
 | `pipe.py` | Geração, movimento, desenho e detecção de "ultrapassado" de cada par de canos |
 | `ground.py` | Posição e desenho (tiled) do chão |
 | `collision.py` | Função genérica de colisão entre retângulos, reaproveitada para chão e canos |
@@ -83,7 +84,7 @@ flappypy/
 
 ## Roadmap
 
-- [ ] Fundo com parallax scrolling (já há backgrounds disponíveis em `assets/images/backgrounds`)
+- [x] Fundo com parallax scrolling
 - [ ] Efeitos sonoros (pulo, colisão, ponto)
 - [ ] Recorde persistente entre execuções
 - [ ] Ajuste fino de física (gravidade/impulso) para uma sensação de jogo mais suave

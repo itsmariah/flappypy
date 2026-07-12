@@ -12,8 +12,11 @@ TITULO = "Flappy Py"
 FPS = 60
 
 # Cores (RGB)
-COR_CEU = (78, 192, 202)
 COR_BRANCO = (255, 255, 255)
+
+# Fundo
+CAMINHO_FUNDO = os.path.join(PASTA_IMAGENS, "backgrounds", "Background1.png")
+VELOCIDADE_FUNDO = 1
 
 # Pássaro
 CAMINHO_FOLHA_PASSARO = os.path.join(PASTA_IMAGENS, "player", "StyleBird1", "Bird1-1.png")

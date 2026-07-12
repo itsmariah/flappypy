@@ -1,7 +1,8 @@
 import pygame
 
-from constantes import ALTURA_TELA, CAMINHO_FONTE, COR_BRANCO, LARGURA_TELA
+from constantes import ALTURA_TELA, CAMINHO_FONTE, LARGURA_TELA
 from menu import Botao
+from texto import desenhar_texto
 
 TAMANHO_FONTE_TITULO_RANKING = 24
 TAMANHO_FONTE_ITEM_RANKING = 14
@@ -31,6 +32,4 @@ class TelaRanking:
         self.botao_voltar.desenhar(tela)
 
     def _desenhar_texto(self, tela, texto, fonte, y):
-        superficie = fonte.render(texto, True, COR_BRANCO)
-        retangulo = superficie.get_rect(centerx=LARGURA_TELA // 2, y=y)
-        tela.blit(superficie, retangulo)
+        desenhar_texto(tela, texto, fonte, centerx=LARGURA_TELA // 2, y=y)

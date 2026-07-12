@@ -3,7 +3,8 @@ import os
 
 import pygame
 
-from constantes import CAMINHO_FONTE, CAMINHO_RECORDES, COR_BRANCO, TAMANHO_FONTE_PLACAR
+from constantes import CAMINHO_FONTE, CAMINHO_RECORDES, TAMANHO_FONTE_PLACAR
+from texto import desenhar_texto
 
 
 class Placar:
@@ -50,6 +51,4 @@ class Placar:
                 return {}
 
     def desenhar(self, tela):
-        texto = self.fonte.render(str(self.pontos), True, COR_BRANCO)
-        posicao = texto.get_rect(centerx=tela.get_width() // 2, y=20)
-        tela.blit(texto, posicao)
+        desenhar_texto(tela, str(self.pontos), self.fonte, centerx=tela.get_width() // 2, y=20)

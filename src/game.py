@@ -137,6 +137,14 @@ class Game:
         self._salvar_preferencias()
 
     def _processar_clique_config(self, pos):
+        if self.tela_config.botao_zerar.foi_clicado(pos):
+            if self.tela_config.solicitar_zerar():
+                self.placar.zerar_recorde()
+            self._salvar_preferencias()
+            return
+
+        self.tela_config.cancelar_confirmacao_zerar()
+
         if self.tela_config.botao_voltar.foi_clicado(pos):
             self.estado = ESTADO_MENU
         elif self.tela_config.botao_volume_menos.foi_clicado(pos):
@@ -158,8 +166,6 @@ class Game:
             self.chao = Ground(self.estilo_cenario)
         elif self.tela_config.botao_cor.foi_clicado(pos):
             self.menu.ciclar_cor_titulo()
-        elif self.tela_config.botao_zerar.foi_clicado(pos):
-            self.placar.zerar_recorde()
         self._salvar_preferencias()
 
     def _salvar_preferencias(self):
@@ -210,6 +216,9 @@ class Game:
         if self.estado == ESTADO_MENU:
             self.passaro.flutuar()
             self.menu.atualizar()
+            return
+        if self.estado == ESTADO_CONFIG:
+            self.tela_config.atualizar()
             return
         if self.estado != ESTADO_JOGANDO:
             return

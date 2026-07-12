@@ -21,10 +21,18 @@ class Cano:
         if estilo not in Cano._tampa_por_estilo:
             config = ESTILOS_CANO[estilo]
             folha = pygame.image.load(config["folha"]).convert_alpha()
-            Cano._tampa_por_estilo[estilo] = folha.subsurface(config["area_tampa"])
-            Cano._corpo_por_estilo[estilo] = folha.subsurface(config["area_corpo"])
-        tampa_original = Cano._tampa_por_estilo[estilo]
-        corpo_original = Cano._corpo_por_estilo[estilo]
+            tampa_original = folha.subsurface(config["area_tampa"])
+            corpo_original = folha.subsurface(config["area_corpo"])
+            Cano._tampa_por_estilo[estilo] = pygame.transform.scale(
+                tampa_original, (LARGURA_CANO, LARGURA_CANO)
+            )
+            Cano._corpo_por_estilo[estilo] = pygame.transform.scale(
+                corpo_original, (LARGURA_CANO, LARGURA_CANO)
+            )
+
+        self.tampa_inferior = Cano._tampa_por_estilo[estilo]
+        self.tampa_superior = pygame.transform.flip(self.tampa_inferior, False, True)
+        self.corpo_tile = Cano._corpo_por_estilo[estilo]
 
         self.velocidade = velocidade
         self.x = LARGURA_TELA
@@ -36,19 +44,6 @@ class Cano:
         self.topo = centro_gap - GAP_CANO // 2
         self.base = centro_gap + GAP_CANO // 2
         self.pontuado = False
-
-        # topo/base não mudam depois de criado, então já preparamos as imagens
-        # escaladas uma única vez aqui, em vez de recalcular a cada desenhar().
-        self.tampa_inferior = pygame.transform.scale(tampa_original, (LARGURA_CANO, LARGURA_CANO))
-        self.tampa_superior = pygame.transform.flip(self.tampa_inferior, False, True)
-        self.corpo_superior = self._escalar_corpo(corpo_original, max(self.topo - LARGURA_CANO, 0))
-        self.corpo_inferior = self._escalar_corpo(
-            corpo_original, max((ALTURA_TELA - self.base) - LARGURA_CANO, 0)
-        )
-
-    @staticmethod
-    def _escalar_corpo(corpo_original, altura):
-        return pygame.transform.scale(corpo_original, (LARGURA_CANO, altura))
 
     def atualizar(self):
         self.x -= self.velocidade
@@ -70,8 +65,19 @@ class Cano:
         return retangulo_superior, retangulo_inferior
 
     def desenhar(self, tela):
-        tela.blit(self.corpo_superior, (self.x, 0))
+        self._desenhar_corpo(tela, 0, max(self.topo - LARGURA_CANO, 0))
         tela.blit(self.tampa_superior, (self.x, self.topo - LARGURA_CANO))
 
         tela.blit(self.tampa_inferior, (self.x, self.base))
-        tela.blit(self.corpo_inferior, (self.x, self.base + LARGURA_CANO))
+        self._desenhar_corpo(tela, self.base + LARGURA_CANO, ALTURA_TELA)
+
+    def _desenhar_corpo(self, tela, y_inicio, y_fim):
+        y = y_inicio
+        while y < y_fim:
+            altura_restante = y_fim - y
+            if altura_restante >= LARGURA_CANO:
+                tela.blit(self.corpo_tile, (self.x, y))
+            else:
+                pedaco = self.corpo_tile.subsurface((0, 0, LARGURA_CANO, altura_restante))
+                tela.blit(pedaco, (self.x, y))
+            y += LARGURA_CANO

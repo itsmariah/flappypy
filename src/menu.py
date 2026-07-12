@@ -11,6 +11,7 @@ from constantes import (
     TAMANHO_FONTE_PLACAR,
     VELOCIDADE_PULSO,
 )
+from texto import desenhar_texto
 
 TAMANHO_ICONE_LAPIS = 14
 COR_PONTA_LAPIS = (255, 210, 120)
@@ -45,18 +46,18 @@ def gerar_engrenagem(centro, raio_externo, raio_interno, dentes):
 
 
 class Botao:
-    def __init__(self, fonte, texto, largura, altura):
+    def __init__(self, fonte, texto, largura, altura, cor=COR_BRANCO):
         self.fonte = fonte
         self.texto = texto
+        self.cor = cor
         self.rect = pygame.Rect(0, 0, largura, altura)
 
     def posicionar(self, x, y):
         self.rect.topleft = (x, y)
 
     def desenhar(self, tela):
-        pygame.draw.rect(tela, COR_BRANCO, self.rect, width=2)
-        superficie = self.fonte.render(self.texto, True, COR_BRANCO)
-        tela.blit(superficie, superficie.get_rect(center=self.rect.center))
+        pygame.draw.rect(tela, self.cor, self.rect, width=2)
+        desenhar_texto(tela, self.texto, self.fonte, self.cor, center=self.rect.center)
 
     def foi_clicado(self, pos):
         return self.rect.collidepoint(pos)
@@ -97,7 +98,7 @@ class Menu:
         self._desenhar_icone_config(tela)
 
     def desenhar_tela_fim(self, tela, pontos, recorde):
-        self._desenhar_texto(tela, "Game Over", self.fonte_titulo, ALTURA_TELA // 2 - 60)
+        self._desenhar_texto(tela, "Game Over", self.fonte_titulo, ALTURA_TELA // 2 - 60, COR_ALERTA)
         self._desenhar_texto(
             tela, f"Pontuação: {pontos}", self.fonte_instrucao, ALTURA_TELA // 2 - 10
         )
@@ -126,22 +127,19 @@ class Menu:
         self.botao_continuar.desenhar(tela)
         self.botao_menu.desenhar(tela)
 
-    def _desenhar_texto(self, tela, texto, fonte, y):
-        superficie = fonte.render(texto, True, COR_BRANCO)
-        retangulo = superficie.get_rect(centerx=LARGURA_TELA // 2, y=y)
-        tela.blit(superficie, retangulo)
+    def _desenhar_texto(self, tela, texto, fonte, y, cor=COR_BRANCO):
+        desenhar_texto(tela, texto, fonte, cor, centerx=LARGURA_TELA // 2, y=y)
 
     def _desenhar_canto(self, tela, texto, canto):
         margem = 10
-        superficie = self.fonte_instrucao.render(texto, True, COR_BRANCO)
-        retangulo = superficie.get_rect()
         if canto == "topleft":
-            retangulo.topleft = (margem, margem)
-            self.retangulo_nome = retangulo
+            self.retangulo_nome = desenhar_texto(
+                tela, texto, self.fonte_instrucao, topleft=(margem, margem)
+            )
         else:
-            retangulo.topright = (LARGURA_TELA - margem, margem)
-            self.retangulo_recorde = retangulo
-        tela.blit(superficie, retangulo)
+            self.retangulo_recorde = desenhar_texto(
+                tela, texto, self.fonte_instrucao, topright=(LARGURA_TELA - margem, margem)
+            )
 
     def _desenhar_icone_lapis(self, tela, espaco=4):
         x = self.retangulo_nome.right + espaco
@@ -160,9 +158,9 @@ class Menu:
 
     def _desenhar_titulo(self, tela):
         cor = CORES_TITULO[self.indice_cor_titulo]
-        superficie = self.fonte_titulo.render("Flappy Py", True, cor)
-        self.retangulo_titulo = superficie.get_rect(centerx=LARGURA_TELA // 2, y=ALTURA_TELA // 2 - 40)
-        tela.blit(superficie, self.retangulo_titulo)
+        self.retangulo_titulo = desenhar_texto(
+            tela, "Flappy Py", self.fonte_titulo, cor, centerx=LARGURA_TELA // 2, y=ALTURA_TELA // 2 - 40
+        )
 
     def titulo_foi_clicado(self, pos):
         return self.retangulo_titulo is not None and self.retangulo_titulo.collidepoint(pos)
@@ -202,7 +200,11 @@ class Menu:
 
     def _desenhar_dica_espaco(self, tela):
         alpha = 195 + math.sin(self.contador_pulso * VELOCIDADE_PULSO) * AMPLITUDE_PULSO
-        superficie = self.fonte_instrucao.render("<espaço>", True, COR_BRANCO)
-        superficie.set_alpha(int(alpha))
-        retangulo = superficie.get_rect(centerx=LARGURA_TELA // 2, y=ALTURA_TELA // 2 + 20)
-        tela.blit(superficie, retangulo)
+        desenhar_texto(
+            tela,
+            "<espaço>",
+            self.fonte_instrucao,
+            alpha=int(alpha),
+            centerx=LARGURA_TELA // 2,
+            y=ALTURA_TELA // 2 + 20,
+        )

@@ -102,6 +102,13 @@ LIMITE_NOME = 12
 # Preferências
 CAMINHO_PREFERENCIAS = os.path.join(_PASTA_RAIZ, "data", "preferencias.json")
 
+# Texto
+COR_SOMBRA_TEXTO = (0, 0, 0)
+DESLOCAMENTO_SOMBRA_TEXTO = 2
+
+# Confirmação de ações destrutivas
+FRAMES_CONFIRMACAO = 180
+
 # Sons
 CAMINHO_SOM_PULO = os.path.join(PASTA_SONS, "wing_flap.mp3")
 CAMINHO_SOM_PONTO = os.path.join(PASTA_SONS, "coin.wav")  # coin.mp3 tinha ~185ms de silêncio no início

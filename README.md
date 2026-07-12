@@ -44,6 +44,7 @@ Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar 
 - "Juice" visual: partículas ao pular, screen shake ao colidir
 - Pausa (tecla Esc) com opção de continuar ou voltar ao menu
 - Ranking com todos os jogadores e recordes salvos, acessível clicando no recorde no menu
+- Texto com sombra (legível em qualquer fundo) e ações destrutivas em vermelho, com confirmação em dois cliques (ex: zerar recorde)
 
 ## Arquitetura
 
@@ -67,6 +68,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `configuracoes.py` | Tela de configurações (volume, trocar nome, cor do título, zerar recorde) |
 | `ranking.py` | Tela de ranking — lista todos os jogadores e recordes salvos, do maior pro menor |
 | `efeitos.py` | "Juice" visual: partículas (`SistemaParticulas`) e tremor de tela (`Shake`) |
+| `texto.py` | Função compartilhada de desenho de texto com sombra, usada por todas as telas |
 
 **Decisões de design que valem destacar:**
 - Cada entidade encapsula o próprio estado e comportamento (`Bird.pousar()`, `Cano.foi_ultrapassado()`) — o `Game` nunca lê ou altera atributos internos diretamente, só chama métodos.
@@ -79,6 +81,9 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 - `Bird`, `Fundo`, `Cano` e `Ground` recebem um índice de "estilo" no construtor e cacheiam os sprites carregados por estilo (não só uma vez pra sempre) — permite trocar a aparência em runtime sem recarregar do disco a cada troca.
 - Nem todo estilo de cano tem um "bico" visualmente destacado (só o Style 1) — os demais reaproveitam a mesma textura do corpo como tampa (`area_tampa == area_corpo`), sem precisar de um caso especial no código de desenho.
 - O screen shake exigiu desenhar tudo numa superfície intermediária (`self.cena`) em vez de direto na tela — só assim dá pra colar o quadro final com um deslocamento aleatório sem precisar recalcular a posição de cada elemento individualmente.
+- O corpo dos canos é **repetido (tiled)**, não esticado — esticar uma textura pequena pra qualquer altura distorce visivelmente texturas mais "ruidosas" (Style 2/3); repetir a mesma textura em blocos do tamanho original mantém a nitidez em qualquer estilo.
+- `texto.desenhar_texto()` centraliza o desenho de texto com sombra (usado por todas as telas) — evita duplicar a lógica de sombra em cinco arquivos diferentes, e suporta transparência opcional pra efeitos como o texto pulsante do menu.
+- Ações destrutivas (zerar recorde) pedem confirmação em dois cliques: primeiro clique arma um temporizador (`FRAMES_CONFIRMACAO`) e troca o texto/cor do botão; um segundo clique dentro do prazo confirma, qualquer outro clique ou o tempo esgotado cancela.
 
 ## Tecnologias
 

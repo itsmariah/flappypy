@@ -71,6 +71,7 @@ class Menu:
         self.contador_pulso = 0
         self.botao_menu = Botao(self.fonte_instrucao, "Menu", 150, 36)
         self.botao_reiniciar = Botao(self.fonte_instrucao, "Reiniciar", 150, 36)
+        self.botao_continuar = Botao(self.fonte_instrucao, "Continuar", 150, 36)
         self.retangulo_mudo = pygame.Rect(10, 34, TAMANHO_ICONE, TAMANHO_ICONE)
         self.retangulo_config = pygame.Rect(10, 34 + TAMANHO_ICONE + 6, TAMANHO_ICONE, TAMANHO_ICONE)
 
@@ -110,6 +111,18 @@ class Menu:
         self.botao_reiniciar.posicionar(x_inicial + self.botao_menu.rect.width + espaco, y_botoes)
         self.botao_menu.desenhar(tela)
         self.botao_reiniciar.desenhar(tela)
+
+    def desenhar_tela_pausa(self, tela):
+        self._desenhar_texto(tela, "Pausado", self.fonte_titulo, ALTURA_TELA // 2 - 60)
+
+        espaco = 20
+        largura_total = self.botao_continuar.rect.width + espaco + self.botao_menu.rect.width
+        x_inicial = (LARGURA_TELA - largura_total) // 2
+        y_botoes = ALTURA_TELA // 2
+        self.botao_continuar.posicionar(x_inicial, y_botoes)
+        self.botao_menu.posicionar(x_inicial + self.botao_continuar.rect.width + espaco, y_botoes)
+        self.botao_continuar.desenhar(tela)
+        self.botao_menu.desenhar(tela)
 
     def _desenhar_texto(self, tela, texto, fonte, y):
         superficie = fonte.render(texto, True, COR_BRANCO)

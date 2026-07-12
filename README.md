@@ -34,6 +34,7 @@ Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar 
 - Personalização visual: pássaro (2 estilos), fundo (9 imagens) e cenário — canos + chão pareados (3 estilos), tudo trocável pela tela de configurações
 - Navegação por botões (não só teclado) nas telas de menu e game over
 - "Juice" visual: partículas ao pular, screen shake ao colidir
+- Pausa (tecla Esc) com opção de continuar ou voltar ao menu
 
 ## Arquitetura
 
@@ -88,7 +89,7 @@ pip install -r requirements.txt
 python src/main.py
 ```
 
-**Controles:** barra de espaço para pular / começar / reiniciar; mouse para os botões, ícones e cor do título.
+**Controles:** barra de espaço para pular / começar / reiniciar; Esc para pausar; mouse para os botões, ícones e cor do título.
 
 ## Testes
 
@@ -128,8 +129,9 @@ flappypy/
 - [x] Suíte de testes automatizados (pytest, 36 testes, headless)
 - [x] Personalização visual (pássaro, fundo, cenário canos+chão)
 - [x] "Juice" visual: partículas ao pular e screen shake ao colidir
+- [x] Pausa (Esc), com opção de continuar ou voltar ao menu
 
-Ideias futuras: pausar o jogo, ranking entre jogadores. Os estilos de tile 4 e 5 do pacote não viraram opção de cenário — investigados e descartados, parecem ser texturas de plataforma/arquitetura, não de canos.
+Ideias futuras: ranking entre jogadores. Os estilos de tile 4 e 5 do pacote não viraram opção de cenário — investigados e descartados, parecem ser texturas de plataforma/arquitetura, não de canos.
 
 ## Créditos
 

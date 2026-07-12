@@ -15,6 +15,7 @@ from constantes import (
     ESTADO_JOGANDO,
     ESTADO_MENU,
     ESTADO_NOME,
+    ESTADO_PAUSADO,
     ESTILOS_CANO,
     FPS,
     INCREMENTO_VELOCIDADE_CANO,
@@ -85,12 +86,29 @@ class Game:
                 self._processar_evento_nome(evento)
             elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_SPACE:
                 self._processar_espaco()
+            elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
+                self._processar_escape()
             elif evento.type == pygame.MOUSEBUTTONDOWN and self.estado == ESTADO_MENU:
                 self._processar_clique_menu(evento.pos)
             elif evento.type == pygame.MOUSEBUTTONDOWN and self.estado == ESTADO_GAME_OVER:
                 self._processar_clique_game_over(evento.pos)
             elif evento.type == pygame.MOUSEBUTTONDOWN and self.estado == ESTADO_CONFIG:
                 self._processar_clique_config(evento.pos)
+            elif evento.type == pygame.MOUSEBUTTONDOWN and self.estado == ESTADO_PAUSADO:
+                self._processar_clique_pausa(evento.pos)
+
+    def _processar_escape(self):
+        if self.estado == ESTADO_JOGANDO:
+            self.estado = ESTADO_PAUSADO
+        elif self.estado == ESTADO_PAUSADO:
+            self.estado = ESTADO_JOGANDO
+
+    def _processar_clique_pausa(self, pos):
+        if self.menu.botao_continuar.foi_clicado(pos):
+            self.estado = ESTADO_JOGANDO
+        elif self.menu.botao_menu.foi_clicado(pos):
+            self._reiniciar()
+            self.estado = ESTADO_MENU
 
     def _processar_clique_menu(self, pos):
         if self.menu.nome_foi_clicado(pos):
@@ -210,7 +228,7 @@ class Game:
         self.particulas.desenhar(self.cena)
         self.chao.desenhar(self.cena)
 
-        if self.estado in (ESTADO_JOGANDO, ESTADO_GAME_OVER):
+        if self.estado in (ESTADO_JOGANDO, ESTADO_GAME_OVER, ESTADO_PAUSADO):
             self.placar.desenhar(self.cena)
 
         if self.estado == ESTADO_NOME:
@@ -223,6 +241,8 @@ class Game:
             self.menu.desenhar_tela_fim(self.cena, self.placar.pontos, self.placar.recorde)
         elif self.estado == ESTADO_CONFIG:
             self.tela_config.desenhar(self.cena, self.audio.volume, self.menu.cor_titulo_atual())
+        elif self.estado == ESTADO_PAUSADO:
+            self.menu.desenhar_tela_pausa(self.cena)
 
         self.tela.fill((0, 0, 0))
         self.tela.blit(self.cena, self.shake.offset())

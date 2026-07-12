@@ -92,6 +92,7 @@ ESTADO_MENU = "menu"
 ESTADO_JOGANDO = "jogando"
 ESTADO_GAME_OVER = "game_over"
 ESTADO_CONFIG = "config"
+ESTADO_PAUSADO = "pausado"
 
 # Jogador
 CAMINHO_NOME_JOGADOR = os.path.join(_PASTA_RAIZ, "data", "jogador.txt")

@@ -21,8 +21,9 @@ Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar 
 
 - Física de queda livre e pulo do pássaro (gravidade + impulso), calibrada pra uma sensação de jogo suave
 - Geração procedural de canos em intervalos regulares, com abertura em posição aleatória
+- Dificuldade progressiva: canos (e chão) ficam mais rápidos a cada 5 pontos, até um teto
 - Detecção de colisão (pássaro × chão, pássaro × canos)
-- Pontuação com recorde persistente entre execuções
+- Pontuação com recorde persistente **por jogador** entre execuções
 - Máquina de estados: **nome do jogador → menu → jogando → game over → reiniciar/configurações**
 - Pássaro com animação de bater asas (sprite sheet) — inclusive uma animação de flutuação ociosa na tela de menu
 - Canos, chão e fundo (parallax scrolling) com sprites reais, fonte pixelada (Press Start 2P) e efeitos sonoros
@@ -46,7 +47,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `ground.py` | Posição, rolagem (tiled) e desenho do chão, na mesma velocidade dos canos |
 | `collision.py` | Função genérica de colisão entre retângulos, reaproveitada para chão e canos |
 | `audio.py` | Carregamento, volume e reprodução dos efeitos sonoros |
-| `score.py` | Contagem/exibição da pontuação e persistência do recorde em disco |
+| `score.py` | Contagem/exibição da pontuação e persistência do recorde por jogador (JSON) |
 | `jogador.py` | Nome do jogador: estado sendo digitado e persistência em disco |
 | `menu.py` | Telas de menu (nome, inicial, game over), botões reutilizáveis e ícones desenhados (lápis, mudo, engrenagem) |
 | `configuracoes.py` | Tela de configurações (volume, trocar nome, cor do título, zerar recorde) |
@@ -103,8 +104,10 @@ flappypy/
 - [x] Ajuste fino de física (gravidade/impulso) para uma sensação de jogo mais suave
 - [x] Identificação do jogador (nome editável) e tela de configurações (volume, cor do título, zerar recorde)
 - [x] Chão com parallax scrolling (mesma velocidade dos canos)
+- [x] Dificuldade progressiva (canos e chão aceleram a cada 5 pontos)
+- [x] Recorde por jogador (cada nome tem seu próprio recorde salvo)
 
-Todos os itens planejados inicialmente foram concluídos. Ideias para uma próxima fase: dificuldade progressiva (canos mais rápidos com o tempo), recorde por jogador (hoje é um único arquivo global).
+Todos os itens planejados foram concluídos.
 
 ## Créditos
 

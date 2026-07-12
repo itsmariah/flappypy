@@ -10,7 +10,6 @@ from constantes import (
     LARGURA_CANO,
     LARGURA_TELA,
     MARGEM_GAP,
-    VELOCIDADE_CANO,
 )
 
 TAMANHO_TILE_ORIGINAL = 32  # tile é quadrado na folha original
@@ -22,12 +21,13 @@ class Cano:
     _tampa_original = None
     _corpo_original = None
 
-    def __init__(self):
+    def __init__(self, velocidade):
         if Cano._tampa_original is None:
             folha = pygame.image.load(CAMINHO_FOLHA_CANOS).convert_alpha()
             Cano._tampa_original = folha.subsurface(AREA_TAMPA_ORIGINAL)
             Cano._corpo_original = folha.subsurface(AREA_CORPO_ORIGINAL)
 
+        self.velocidade = velocidade
         self.x = LARGURA_TELA
         altura_disponivel = ALTURA_TELA - ALTURA_CHAO
         centro_gap = random.randint(
@@ -49,7 +49,7 @@ class Cano:
         return pygame.transform.scale(Cano._corpo_original, (LARGURA_CANO, altura))
 
     def atualizar(self):
-        self.x -= VELOCIDADE_CANO
+        self.x -= self.velocidade
 
     def fora_da_tela(self):
         return self.x + LARGURA_CANO < 0

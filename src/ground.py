@@ -1,13 +1,6 @@
 import pygame
 
-from constantes import (
-    ALTURA_CHAO,
-    ALTURA_TELA,
-    CAMINHO_FOLHA_CHAO,
-    LARGURA_TELA,
-    LARGURA_TILE_CHAO,
-    VELOCIDADE_CANO,
-)
+from constantes import ALTURA_CHAO, ALTURA_TELA, CAMINHO_FOLHA_CHAO, LARGURA_TELA, LARGURA_TILE_CHAO
 
 AREA_TILE_ORIGINAL = (0, 80, 16, 32)  # grama + terra, sem decorações, na folha original
 
@@ -24,8 +17,8 @@ class Ground:
         self.y = ALTURA_TELA - ALTURA_CHAO
         self.x = 0
 
-    def atualizar(self):
-        self.x -= VELOCIDADE_CANO
+    def atualizar(self, velocidade):
+        self.x -= velocidade
         if self.x <= -LARGURA_TILE_CHAO:
             self.x += LARGURA_TILE_CHAO
 
@@ -33,5 +26,5 @@ class Ground:
         return pygame.Rect(0, self.y, LARGURA_TELA, ALTURA_CHAO)
 
     def desenhar(self, tela):
-        for x in range(self.x, LARGURA_TELA, LARGURA_TILE_CHAO):
+        for x in range(int(self.x), LARGURA_TELA, LARGURA_TILE_CHAO):
             tela.blit(Ground._tile, (x, self.y))

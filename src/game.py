@@ -13,9 +13,13 @@ from constantes import (
     ESTADO_MENU,
     ESTADO_NOME,
     FPS,
+    INCREMENTO_VELOCIDADE_CANO,
     INTERVALO_CANOS,
     LARGURA_TELA,
+    PONTOS_POR_NIVEL,
     TITULO,
+    VELOCIDADE_CANO_INICIAL,
+    VELOCIDADE_CANO_MAXIMA,
 )
 from ground import Ground
 from jogador import Jogador
@@ -45,7 +49,7 @@ class Game:
         self.passaro = Bird()
         self.canos = []
         self.frames_desde_ultimo_cano = INTERVALO_CANOS
-        self.placar = Placar()
+        self.placar = Placar(self.jogador.nome)
 
     def executar(self):
         while self.rodando:
@@ -112,6 +116,7 @@ class Game:
             return
         if evento.key == pygame.K_RETURN:
             if self.jogador.confirmar():
+                self._reiniciar()
                 self.estado = self.origem_estado_nome
         elif evento.key == pygame.K_BACKSPACE:
             self.jogador.apagar()
@@ -136,19 +141,25 @@ class Game:
         if self.estado != ESTADO_JOGANDO:
             return
 
+        velocidade_atual = self._calcular_velocidade_cano()
         self.fundo.atualizar()
-        self.chao.atualizar()
+        self.chao.atualizar(velocidade_atual)
         self.passaro.atualizar()
         if colidiu(self.passaro.obter_retangulo(), self.chao.obter_retangulo()):
             self.passaro.pousar(self.chao.y)
             self.estado = ESTADO_GAME_OVER
             self.audio.tocar_fim_de_jogo()
-        self._atualizar_canos()
+        self._atualizar_canos(velocidade_atual)
 
-    def _atualizar_canos(self):
+    def _calcular_velocidade_cano(self):
+        nivel = self.placar.pontos // PONTOS_POR_NIVEL
+        velocidade = VELOCIDADE_CANO_INICIAL + nivel * INCREMENTO_VELOCIDADE_CANO
+        return min(velocidade, VELOCIDADE_CANO_MAXIMA)
+
+    def _atualizar_canos(self, velocidade_atual):
         self.frames_desde_ultimo_cano += 1
         if self.frames_desde_ultimo_cano >= INTERVALO_CANOS:
-            self.canos.append(Cano())
+            self.canos.append(Cano(velocidade_atual))
             self.frames_desde_ultimo_cano = 0
 
         retangulo_passaro = self.passaro.obter_retangulo()

@@ -7,9 +7,10 @@
 Um clone do clássico *Flappy Bird* feito em Python com [Pygame](https://www.pygame.org/), construído do zero como projeto de estudo de arquitetura de software aplicada a jogos.
 
 <p align="center">
-  <img src="docs/screenshot-menu.png" width="30%" alt="Tela inicial" />
-  <img src="docs/screenshot-jogando.png" width="30%" alt="Jogo em andamento" />
-  <img src="docs/screenshot-gameover.png" width="30%" alt="Tela de game over" />
+  <img src="docs/screenshot-menu.png" width="23%" alt="Tela inicial" />
+  <img src="docs/screenshot-jogando.png" width="23%" alt="Jogo em andamento" />
+  <img src="docs/screenshot-gameover.png" width="23%" alt="Tela de game over" />
+  <img src="docs/screenshot-config.png" width="23%" alt="Tela de configurações" />
 </p>
 
 ## Sobre o projeto
@@ -18,12 +19,17 @@ Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar 
 
 ## Funcionalidades
 
-- Física de queda livre e pulo do pássaro (gravidade + impulso)
+- Física de queda livre e pulo do pássaro (gravidade + impulso), calibrada pra uma sensação de jogo suave
 - Geração procedural de canos em intervalos regulares, com abertura em posição aleatória
 - Detecção de colisão (pássaro × chão, pássaro × canos)
-- Pontuação: soma um ponto a cada par de canos ultrapassado
-- Máquina de estados simples: **menu inicial → jogando → game over → reiniciar**
-- Pássaro com animação de bater asas (sprite sheet), canos e chão com sprites reais (não são retângulos coloridos)
+- Pontuação com recorde persistente entre execuções
+- Máquina de estados: **nome do jogador → menu → jogando → game over → reiniciar/configurações**
+- Pássaro com animação de bater asas (sprite sheet) — inclusive uma animação de flutuação ociosa na tela de menu
+- Canos, chão e fundo (parallax scrolling) com sprites reais, fonte pixelada (Press Start 2P) e efeitos sonoros
+- Identificação do jogador: nome digitado na primeira execução, editável a qualquer momento (clique no nome ou pela tela de configurações)
+- Personalização: cor do título alternável por clique, com dica visual pulsante
+- Tela de configurações: volume (com botão de mutar rápido no menu), trocar nome, cor do título, zerar recorde
+- Navegação por botões (não só teclado) nas telas de menu e game over
 
 ## Arquitetura
 
@@ -39,15 +45,19 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `pipe.py` | Geração, movimento, desenho e detecção de "ultrapassado" de cada par de canos |
 | `ground.py` | Posição e desenho (tiled) do chão |
 | `collision.py` | Função genérica de colisão entre retângulos, reaproveitada para chão e canos |
-| `audio.py` | Carregamento e reprodução dos efeitos sonoros |
+| `audio.py` | Carregamento, volume e reprodução dos efeitos sonoros |
 | `score.py` | Contagem/exibição da pontuação e persistência do recorde em disco |
-| `menu.py` | Telas de texto (inicial e game over) |
+| `jogador.py` | Nome do jogador: estado sendo digitado e persistência em disco |
+| `menu.py` | Telas de menu (nome, inicial, game over), botões reutilizáveis e ícones desenhados (lápis, mudo, engrenagem) |
+| `configuracoes.py` | Tela de configurações (volume, trocar nome, cor do título, zerar recorde) |
 
 **Decisões de design que valem destacar:**
 - Cada entidade encapsula o próprio estado e comportamento (`Bird.pousar()`, `Cano.foi_ultrapassado()`) — o `Game` nunca lê ou altera atributos internos diretamente, só chama métodos.
 - `collision.colidiu()` é uma função pura e genérica (dois retângulos → booleano), reaproveitada sem alteração tanto para o chão quanto para os canos.
 - Sprites são carregados uma única vez (cache em atributo de classe) e recortados de sprite sheets via `Surface.subsurface()`, em vez de um arquivo de imagem por elemento.
-- Estados do jogo (`ESTADO_MENU`, `ESTADO_JOGANDO`, `ESTADO_GAME_OVER`) são simples constantes de string, não um padrão *State* completo — decisão deliberada para manter a complexidade proporcional ao tamanho do projeto.
+- Estados do jogo (`ESTADO_MENU`, `ESTADO_JOGANDO`, `ESTADO_GAME_OVER`, etc.) são simples constantes de string, não um padrão *State* completo — decisão deliberada para manter a complexidade proporcional ao tamanho do projeto.
+- A fonte pixelada não tem glifos de emoji, então os ícones (lápis, alto-falante, engrenagem) são desenhados com `pygame.draw` (polígonos simples) em vez de caracteres de fonte.
+- Telas que podem levar à edição do nome (menu e configurações) guardam de onde vieram (`origem_estado_nome`) pra saber pra onde voltar ao confirmar — evita hardcode de navegação.
 
 ## Tecnologias
 
@@ -69,7 +79,7 @@ pip install -r requirements.txt
 python src/main.py
 ```
 
-**Controles:** barra de espaço para pular / começar / reiniciar.
+**Controles:** barra de espaço para pular / começar / reiniciar; mouse para os botões, ícones e cor do título.
 
 ## Estrutura de pastas
 
@@ -79,7 +89,7 @@ flappypy/
 │   ├── images/       # sprites (pássaro, canos, tiles, backgrounds)
 │   ├── sounds/        # efeitos sonoros
 │   └── fonts/          # fonte pixelada (Press Start 2P)
-├── data/               # recorde salvo em disco (gerado em runtime, fora do controle de versão)
+├── data/               # recorde e nome do jogador salvos em disco (gerado em runtime, fora do controle de versão)
 ├── docs/               # screenshots usados neste README
 ├── src/                # código-fonte
 └── requirements.txt
@@ -91,8 +101,9 @@ flappypy/
 - [x] Efeitos sonoros (pulo, colisão, ponto)
 - [x] Recorde persistente entre execuções
 - [x] Ajuste fino de física (gravidade/impulso) para uma sensação de jogo mais suave
+- [x] Identificação do jogador (nome editável) e tela de configurações (volume, cor do título, zerar recorde)
 
-Todos os itens planejados inicialmente foram concluídos. Ideias para uma próxima fase: chão com parallax, animação do pássaro na tela de menu, dificuldade progressiva (canos mais rápidos com o tempo).
+Todos os itens planejados inicialmente foram concluídos. Ideias para uma próxima fase: chão com parallax, dificuldade progressiva (canos mais rápidos com o tempo), recorde por jogador (hoje é um único arquivo global).
 
 ## Créditos
 

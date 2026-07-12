@@ -4,17 +4,21 @@ from audio import Audio
 from background import Fundo
 from bird import Bird
 from collision import colidiu
+from configuracoes import TelaConfiguracoes
 from constantes import (
     ALTURA_TELA,
+    ESTADO_CONFIG,
     ESTADO_GAME_OVER,
     ESTADO_JOGANDO,
     ESTADO_MENU,
+    ESTADO_NOME,
     FPS,
     INTERVALO_CANOS,
     LARGURA_TELA,
     TITULO,
 )
 from ground import Ground
+from jogador import Jogador
 from menu import Menu
 from pipe import Cano
 from score import Placar
@@ -28,10 +32,13 @@ class Game:
         self.relogio = pygame.time.Clock()
         self.rodando = True
         self.menu = Menu()
+        self.tela_config = TelaConfiguracoes()
         self.audio = Audio()
         self.fundo = Fundo()
         self.chao = Ground()
-        self.estado = ESTADO_MENU
+        self.jogador = Jogador()
+        self.estado = ESTADO_MENU if self.jogador.tem_nome() else ESTADO_NOME
+        self.origem_estado_nome = ESTADO_MENU
         self._reiniciar()
 
     def _reiniciar(self):
@@ -53,8 +60,63 @@ class Game:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 self.rodando = False
+            elif self.estado == ESTADO_NOME:
+                self._processar_evento_nome(evento)
             elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_SPACE:
                 self._processar_espaco()
+            elif evento.type == pygame.MOUSEBUTTONDOWN and self.estado == ESTADO_MENU:
+                self._processar_clique_menu(evento.pos)
+            elif evento.type == pygame.MOUSEBUTTONDOWN and self.estado == ESTADO_GAME_OVER:
+                self._processar_clique_game_over(evento.pos)
+            elif evento.type == pygame.MOUSEBUTTONDOWN and self.estado == ESTADO_CONFIG:
+                self._processar_clique_config(evento.pos)
+
+    def _processar_clique_menu(self, pos):
+        if self.menu.nome_foi_clicado(pos):
+            self.jogador.iniciar_edicao()
+            self.origem_estado_nome = ESTADO_MENU
+            self.estado = ESTADO_NOME
+        elif self.menu.titulo_foi_clicado(pos):
+            self.menu.ciclar_cor_titulo()
+        elif self.menu.mudo_foi_clicado(pos):
+            self.audio.alternar_mudo()
+        elif self.menu.config_foi_clicado(pos):
+            self.estado = ESTADO_CONFIG
+
+    def _processar_clique_config(self, pos):
+        if self.tela_config.botao_voltar.foi_clicado(pos):
+            self.estado = ESTADO_MENU
+        elif self.tela_config.botao_volume_menos.foi_clicado(pos):
+            self.audio.diminuir_volume()
+        elif self.tela_config.botao_volume_mais.foi_clicado(pos):
+            self.audio.aumentar_volume()
+        elif self.tela_config.botao_nome.foi_clicado(pos):
+            self.jogador.iniciar_edicao()
+            self.origem_estado_nome = ESTADO_CONFIG
+            self.estado = ESTADO_NOME
+        elif self.tela_config.botao_cor.foi_clicado(pos):
+            self.menu.ciclar_cor_titulo()
+        elif self.tela_config.botao_zerar.foi_clicado(pos):
+            self.placar.zerar_recorde()
+
+    def _processar_clique_game_over(self, pos):
+        if self.menu.botao_reiniciar.foi_clicado(pos):
+            self._reiniciar()
+            self.estado = ESTADO_JOGANDO
+        elif self.menu.botao_menu.foi_clicado(pos):
+            self._reiniciar()
+            self.estado = ESTADO_MENU
+
+    def _processar_evento_nome(self, evento):
+        if evento.type != pygame.KEYDOWN:
+            return
+        if evento.key == pygame.K_RETURN:
+            if self.jogador.confirmar():
+                self.estado = self.origem_estado_nome
+        elif evento.key == pygame.K_BACKSPACE:
+            self.jogador.apagar()
+        elif evento.unicode:
+            self.jogador.digitar(evento.unicode)
 
     def _processar_espaco(self):
         self.audio.tocar_pulo()
@@ -67,6 +129,10 @@ class Game:
             self.estado = ESTADO_JOGANDO
 
     def _atualizar(self):
+        if self.estado == ESTADO_MENU:
+            self.passaro.flutuar()
+            self.menu.atualizar()
+            return
         if self.estado != ESTADO_JOGANDO:
             return
 
@@ -103,11 +169,19 @@ class Game:
             cano.desenhar(self.tela)
         self.passaro.desenhar(self.tela)
         self.chao.desenhar(self.tela)
-        self.placar.desenhar(self.tela)
 
-        if self.estado == ESTADO_MENU:
-            self.menu.desenhar_tela_inicial(self.tela, self.placar.recorde)
+        if self.estado in (ESTADO_JOGANDO, ESTADO_GAME_OVER):
+            self.placar.desenhar(self.tela)
+
+        if self.estado == ESTADO_NOME:
+            self.menu.desenhar_tela_nome(self.tela, self.jogador.nome_digitando)
+        elif self.estado == ESTADO_MENU:
+            self.menu.desenhar_tela_inicial(
+                self.tela, self.jogador.nome, self.placar.recorde, self.audio.mutado
+            )
         elif self.estado == ESTADO_GAME_OVER:
             self.menu.desenhar_tela_fim(self.tela, self.placar.pontos, self.placar.recorde)
+        elif self.estado == ESTADO_CONFIG:
+            self.tela_config.desenhar(self.tela, self.audio.volume, self.menu.cor_titulo_atual())
 
         pygame.display.flip()

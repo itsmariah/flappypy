@@ -29,6 +29,8 @@ POS_INICIAL_X = 60
 POS_INICIAL_Y = ALTURA_TELA // 2
 GRAVIDADE = 0.35
 FORCA_PULO = -7
+AMPLITUDE_FLUTUACAO = 10
+VELOCIDADE_FLUTUACAO = 0.05
 
 # Chão
 CAMINHO_FOLHA_CHAO = os.path.join(PASTA_IMAGENS, "tiles", "Style 1", "SimpleStyle1.png")
@@ -45,17 +47,27 @@ MARGEM_GAP = 50
 
 # Fonte
 CAMINHO_FONTE = os.path.join(_PASTA_RAIZ, "assets", "fonts", "PressStart2P-Regular.ttf")
+AMPLITUDE_PULSO = 60
+VELOCIDADE_PULSO = 0.08
 
 # Placar
 TAMANHO_FONTE_PLACAR = 28
 CAMINHO_RECORDE = os.path.join(_PASTA_RAIZ, "data", "recorde.txt")
 
 # Estados do jogo
+ESTADO_NOME = "nome"
 ESTADO_MENU = "menu"
 ESTADO_JOGANDO = "jogando"
 ESTADO_GAME_OVER = "game_over"
+ESTADO_CONFIG = "config"
+
+# Jogador
+CAMINHO_NOME_JOGADOR = os.path.join(_PASTA_RAIZ, "data", "jogador.txt")
+LIMITE_NOME = 12
 
 # Sons
 CAMINHO_SOM_PULO = os.path.join(PASTA_SONS, "wing_flap.mp3")
 CAMINHO_SOM_PONTO = os.path.join(PASTA_SONS, "coin.wav")  # coin.mp3 tinha ~185ms de silêncio no início
 CAMINHO_SOM_FIM_DE_JOGO = os.path.join(PASTA_SONS, "game_over_arcade.mp3")
+VOLUME_INICIAL = 0.7
+PASSO_VOLUME = 0.1

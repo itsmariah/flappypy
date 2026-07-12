@@ -17,6 +17,10 @@ class Placar:
             self.recorde = self.pontos
             self._salvar_recorde()
 
+    def zerar_recorde(self):
+        self.recorde = 0
+        self._salvar_recorde()
+
     @staticmethod
     def _carregar_recorde():
         if not os.path.exists(CAMINHO_RECORDE):

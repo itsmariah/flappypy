@@ -1,7 +1,10 @@
+import math
+
 import pygame
 
 from constantes import (
     ALTURA_PASSARO,
+    AMPLITUDE_FLUTUACAO,
     CAMINHO_FOLHA_PASSARO,
     FORCA_PULO,
     GRAVIDADE,
@@ -10,6 +13,7 @@ from constantes import (
     POS_INICIAL_X,
     POS_INICIAL_Y,
     QUADROS_ANIMACAO_PASSARO,
+    VELOCIDADE_FLUTUACAO,
 )
 
 TAMANHO_FRAME_ORIGINAL = 16  # cada quadro mede 16x16 na folha de sprites original
@@ -44,6 +48,11 @@ class Bird:
         self.velocidade_y += GRAVIDADE
         self.y += self.velocidade_y
         self.contador_animacao += 1
+
+    def flutuar(self):
+        self.contador_animacao += 1
+        deslocamento = math.sin(self.contador_animacao * VELOCIDADE_FLUTUACAO) * AMPLITUDE_FLUTUACAO
+        self.y = POS_INICIAL_Y + deslocamento
 
     def pousar(self, y_superficie):
         self.y = y_superficie - ALTURA_PASSARO

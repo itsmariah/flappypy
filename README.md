@@ -40,7 +40,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `ground.py` | Posição e desenho (tiled) do chão |
 | `collision.py` | Função genérica de colisão entre retângulos, reaproveitada para chão e canos |
 | `audio.py` | Carregamento e reprodução dos efeitos sonoros |
-| `score.py` | Contagem e exibição da pontuação |
+| `score.py` | Contagem/exibição da pontuação e persistência do recorde em disco |
 | `menu.py` | Telas de texto (inicial e game over) |
 
 **Decisões de design que valem destacar:**
@@ -77,7 +77,8 @@ python src/main.py
 flappypy/
 ├── assets/
 │   ├── images/       # sprites (pássaro, canos, tiles, backgrounds)
-│   └── sounds/        # reservado para efeitos sonoros (ainda não usado)
+│   └── sounds/        # efeitos sonoros
+├── data/               # recorde salvo em disco (gerado em runtime, fora do controle de versão)
 ├── docs/               # screenshots usados neste README
 ├── src/                # código-fonte
 └── requirements.txt
@@ -87,8 +88,10 @@ flappypy/
 
 - [x] Fundo com parallax scrolling
 - [x] Efeitos sonoros (pulo, colisão, ponto)
-- [ ] Recorde persistente entre execuções
+- [x] Recorde persistente entre execuções
 - [x] Ajuste fino de física (gravidade/impulso) para uma sensação de jogo mais suave
+
+Todos os itens planejados inicialmente foram concluídos. Ideias para uma próxima fase: chão com parallax, animação do pássaro na tela de menu, dificuldade progressiva (canos mais rápidos com o tempo).
 
 ## Créditos
 

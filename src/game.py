@@ -106,8 +106,8 @@ class Game:
         self.placar.desenhar(self.tela)
 
         if self.estado == ESTADO_MENU:
-            self.menu.desenhar_tela_inicial(self.tela)
+            self.menu.desenhar_tela_inicial(self.tela, self.placar.recorde)
         elif self.estado == ESTADO_GAME_OVER:
-            self.menu.desenhar_tela_fim(self.tela, self.placar.pontos)
+            self.menu.desenhar_tela_fim(self.tela, self.placar.pontos, self.placar.recorde)
 
         pygame.display.flip()

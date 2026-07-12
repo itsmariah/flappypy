@@ -45,6 +45,7 @@ MARGEM_GAP = 50
 
 # Placar
 TAMANHO_FONTE_PLACAR = 48
+CAMINHO_RECORDE = os.path.join(_PASTA_RAIZ, "data", "recorde.txt")
 
 # Estados do jogo
 ESTADO_MENU = "menu"

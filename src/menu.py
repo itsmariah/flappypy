@@ -28,6 +28,7 @@ CORES_TITULO = [
 TAMANHO_ICONE = 18
 COR_FUNDO_ICONE = (30, 30, 30)
 COR_ALERTA = (255, 90, 90)
+COR_CONTORNO_ICONE = (0, 0, 0)
 CORPO_ALTOFALANTE = [(2, 6), (6, 6), (11, 1), (11, 17), (6, 12), (2, 12)]
 
 
@@ -177,6 +178,7 @@ class Menu:
         x, y = self.retangulo_mudo.topleft
         corpo = [(x + px, y + py) for px, py in CORPO_ALTOFALANTE]
         pygame.draw.polygon(tela, COR_BRANCO, corpo)
+        pygame.draw.polygon(tela, COR_CONTORNO_ICONE, corpo, width=1)
         if mutado:
             pygame.draw.line(tela, COR_ALERTA, (x + 13, y + 3), (x + 17, y + 15), 2)
             pygame.draw.line(tela, COR_ALERTA, (x + 17, y + 3), (x + 13, y + 15), 2)
@@ -192,6 +194,7 @@ class Menu:
         centro = self.retangulo_config.center
         pontos = gerar_engrenagem(centro, 8, 6.5, 8)
         pygame.draw.polygon(tela, COR_BRANCO, pontos)
+        pygame.draw.polygon(tela, COR_CONTORNO_ICONE, pontos, width=1)
         pygame.draw.circle(tela, COR_FUNDO_ICONE, centro, 3)
 
     def config_foi_clicado(self, pos):

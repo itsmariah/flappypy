@@ -88,7 +88,7 @@ flappypy/
 - [x] Fundo com parallax scrolling
 - [x] Efeitos sonoros (pulo, colisão, ponto)
 - [ ] Recorde persistente entre execuções
-- [ ] Ajuste fino de física (gravidade/impulso) para uma sensação de jogo mais suave
+- [x] Ajuste fino de física (gravidade/impulso) para uma sensação de jogo mais suave
 
 ## Créditos
 

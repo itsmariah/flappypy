@@ -16,11 +16,16 @@ FPS = 60
 COR_BRANCO = (255, 255, 255)
 
 # Fundo
-CAMINHO_FUNDO = os.path.join(PASTA_IMAGENS, "backgrounds", "Background1.png")
+CAMINHOS_FUNDO = [
+    os.path.join(PASTA_IMAGENS, "backgrounds", f"Background{i}.png") for i in range(1, 10)
+]
 VELOCIDADE_FUNDO = 1
 
 # Pássaro
-CAMINHO_FOLHA_PASSARO = os.path.join(PASTA_IMAGENS, "player", "StyleBird1", "Bird1-1.png")
+CAMINHOS_FOLHA_PASSARO = [
+    os.path.join(PASTA_IMAGENS, "player", "StyleBird1", "Bird1-1.png"),
+    os.path.join(PASTA_IMAGENS, "player", "StyleBird2", "Bird2-1.png"),
+]
 LARGURA_PASSARO = 32
 ALTURA_PASSARO = 32
 QUADROS_ANIMACAO_PASSARO = 4
@@ -33,12 +38,10 @@ AMPLITUDE_FLUTUACAO = 10
 VELOCIDADE_FLUTUACAO = 0.05
 
 # Chão
-CAMINHO_FOLHA_CHAO = os.path.join(PASTA_IMAGENS, "tiles", "Style 1", "SimpleStyle1.png")
 LARGURA_TILE_CHAO = 32
 ALTURA_CHAO = 50
 
 # Canos
-CAMINHO_FOLHA_CANOS = os.path.join(PASTA_IMAGENS, "tiles", "Style 1", "PipeStyle1.png")
 LARGURA_CANO = 64
 GAP_CANO = 150
 VELOCIDADE_CANO_INICIAL = 3
@@ -47,6 +50,32 @@ INCREMENTO_VELOCIDADE_CANO = 0.5
 PONTOS_POR_NIVEL = 5
 INTERVALO_CANOS = 90
 MARGEM_GAP = 50
+
+# Estilos de cenário (cano + chão), pareados pela mesma pasta "Style N"
+# area_tampa == area_corpo quando o estilo não tem um bico destacado (textura uniforme)
+_PASTA_TILES = os.path.join(PASTA_IMAGENS, "tiles")
+ESTILOS_CANO = [
+    {
+        "folha": os.path.join(_PASTA_TILES, "Style 1", "PipeStyle1.png"),
+        "area_tampa": (0, 0, 32, 32),
+        "area_corpo": (0, 32, 32, 32),
+    },
+    {
+        "folha": os.path.join(_PASTA_TILES, "Style 2", "PipeStyle2.png"),
+        "area_tampa": (0, 0, 32, 32),
+        "area_corpo": (0, 0, 32, 32),
+    },
+    {
+        "folha": os.path.join(_PASTA_TILES, "Style 3", "PipeStyle3.png"),
+        "area_tampa": (0, 0, 32, 32),
+        "area_corpo": (0, 0, 32, 32),
+    },
+]
+ESTILOS_CHAO = [
+    {"folha": os.path.join(_PASTA_TILES, "Style 1", "SimpleStyle1.png"), "area_tile": (0, 80, 16, 32)},
+    {"folha": os.path.join(_PASTA_TILES, "Style 2", "SimpleStyle2.png"), "area_tile": (0, 48, 16, 32)},
+    {"folha": os.path.join(_PASTA_TILES, "Style 3", "SimpleStyle3.png"), "area_tile": (0, 48, 16, 32)},
+]
 
 # Fonte
 CAMINHO_FONTE = os.path.join(_PASTA_RAIZ, "assets", "fonts", "PressStart2P-Regular.ttf")

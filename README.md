@@ -31,6 +31,7 @@ Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar 
 - Identificação do jogador: nome digitado na primeira execução, editável a qualquer momento (clique no nome ou pela tela de configurações)
 - Personalização: cor do título alternável por clique, com dica visual pulsante
 - Tela de configurações: volume (com botão de mutar rápido no menu), trocar nome, cor do título, zerar recorde
+- Personalização visual: pássaro (2 estilos), fundo (9 imagens) e cenário — canos + chão pareados (3 estilos), tudo trocável pela tela de configurações
 - Navegação por botões (não só teclado) nas telas de menu e game over
 
 ## Arquitetura
@@ -61,6 +62,8 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 - A fonte pixelada não tem glifos de emoji, então os ícones (lápis, alto-falante, engrenagem) são desenhados com `pygame.draw` (polígonos simples) em vez de caracteres de fonte.
 - Telas que podem levar à edição do nome (menu e configurações) guardam de onde vieram (`origem_estado_nome`) pra saber pra onde voltar ao confirmar — evita hardcode de navegação.
 - A fórmula de dificuldade progressiva vive numa função de módulo (`game.calcular_velocidade_cano`), não num método da classe `Game` — assim é testável isoladamente, sem precisar instanciar o jogo inteiro (janela, áudio, arquivos).
+- `Bird`, `Fundo`, `Cano` e `Ground` recebem um índice de "estilo" no construtor e cacheiam os sprites carregados por estilo (não só uma vez pra sempre) — permite trocar a aparência em runtime sem recarregar do disco a cada troca.
+- Nem todo estilo de cano tem um "bico" visualmente destacado (só o Style 1) — os demais reaproveitam a mesma textura do corpo como tampa (`area_tampa == area_corpo`), sem precisar de um caso especial no código de desenho.
 
 ## Tecnologias
 
@@ -119,8 +122,10 @@ flappypy/
 - [x] Chão com parallax scrolling (mesma velocidade dos canos)
 - [x] Dificuldade progressiva (canos e chão aceleram a cada 5 pontos)
 - [x] Recorde por jogador (cada nome tem seu próprio recorde salvo)
+- [x] Suíte de testes automatizados (pytest, 36 testes, headless)
+- [x] Personalização visual (pássaro, fundo, cenário canos+chão)
 
-Todos os itens planejados foram concluídos.
+Ideias futuras: mais "juice" visual (screen shake, partículas), pausar o jogo, ranking entre jogadores. Os estilos de tile 4 e 5 do pacote não viraram opção de cenário — investigados e descartados, parecem ser texturas de plataforma/arquitetura, não de canos.
 
 ## Créditos
 

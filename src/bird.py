@@ -5,7 +5,7 @@ import pygame
 from constantes import (
     ALTURA_PASSARO,
     AMPLITUDE_FLUTUACAO,
-    CAMINHO_FOLHA_PASSARO,
+    CAMINHOS_FOLHA_PASSARO,
     FORCA_PULO,
     GRAVIDADE,
     INTERVALO_ANIMACAO_PASSARO,
@@ -20,11 +20,12 @@ TAMANHO_FRAME_ORIGINAL = 16  # cada quadro mede 16x16 na folha de sprites origin
 
 
 class Bird:
-    _quadros = None
+    _quadros_por_estilo = {}
 
-    def __init__(self):
-        if Bird._quadros is None:
-            Bird._quadros = self._carregar_quadros()
+    def __init__(self, estilo=0):
+        if estilo not in Bird._quadros_por_estilo:
+            Bird._quadros_por_estilo[estilo] = self._carregar_quadros(estilo)
+        self.quadros = Bird._quadros_por_estilo[estilo]
 
         self.x = POS_INICIAL_X
         self.y = POS_INICIAL_Y
@@ -32,8 +33,8 @@ class Bird:
         self.contador_animacao = 0
 
     @staticmethod
-    def _carregar_quadros():
-        folha = pygame.image.load(CAMINHO_FOLHA_PASSARO).convert_alpha()
+    def _carregar_quadros(estilo):
+        folha = pygame.image.load(CAMINHOS_FOLHA_PASSARO[estilo]).convert_alpha()
         quadros = []
         for i in range(QUADROS_ANIMACAO_PASSARO):
             area = (i * TAMANHO_FRAME_ORIGINAL, 0, TAMANHO_FRAME_ORIGINAL, TAMANHO_FRAME_ORIGINAL)
@@ -63,4 +64,4 @@ class Bird:
 
     def desenhar(self, tela):
         indice = (self.contador_animacao // INTERVALO_ANIMACAO_PASSARO) % QUADROS_ANIMACAO_PASSARO
-        tela.blit(Bird._quadros[indice], (self.x, self.y))
+        tela.blit(self.quadros[indice], (self.x, self.y))

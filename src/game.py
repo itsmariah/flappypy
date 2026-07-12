@@ -7,11 +7,14 @@ from collision import colidiu
 from configuracoes import TelaConfiguracoes
 from constantes import (
     ALTURA_TELA,
+    CAMINHOS_FOLHA_PASSARO,
+    CAMINHOS_FUNDO,
     ESTADO_CONFIG,
     ESTADO_GAME_OVER,
     ESTADO_JOGANDO,
     ESTADO_MENU,
     ESTADO_NOME,
+    ESTILOS_CANO,
     FPS,
     INCREMENTO_VELOCIDADE_CANO,
     INTERVALO_CANOS,
@@ -44,15 +47,18 @@ class Game:
         self.menu = Menu()
         self.tela_config = TelaConfiguracoes()
         self.audio = Audio()
-        self.fundo = Fundo()
-        self.chao = Ground()
+        self.estilo_fundo = 0
+        self.fundo = Fundo(self.estilo_fundo)
+        self.estilo_cenario = 0
+        self.chao = Ground(self.estilo_cenario)
         self.jogador = Jogador()
+        self.estilo_passaro = 0
         self.estado = ESTADO_MENU if self.jogador.tem_nome() else ESTADO_NOME
         self.origem_estado_nome = ESTADO_MENU
         self._reiniciar()
 
     def _reiniciar(self):
-        self.passaro = Bird()
+        self.passaro = Bird(self.estilo_passaro)
         self.canos = []
         self.frames_desde_ultimo_cano = INTERVALO_CANOS
         self.placar = Placar(self.jogador.nome)
@@ -104,6 +110,15 @@ class Game:
             self.jogador.iniciar_edicao()
             self.origem_estado_nome = ESTADO_CONFIG
             self.estado = ESTADO_NOME
+        elif self.tela_config.botao_passaro.foi_clicado(pos):
+            self.estilo_passaro = (self.estilo_passaro + 1) % len(CAMINHOS_FOLHA_PASSARO)
+            self._reiniciar()
+        elif self.tela_config.botao_fundo.foi_clicado(pos):
+            self.estilo_fundo = (self.estilo_fundo + 1) % len(CAMINHOS_FUNDO)
+            self.fundo = Fundo(self.estilo_fundo)
+        elif self.tela_config.botao_cenario.foi_clicado(pos):
+            self.estilo_cenario = (self.estilo_cenario + 1) % len(ESTILOS_CANO)
+            self.chao = Ground(self.estilo_cenario)
         elif self.tela_config.botao_cor.foi_clicado(pos):
             self.menu.ciclar_cor_titulo()
         elif self.tela_config.botao_zerar.foi_clicado(pos):
@@ -160,7 +175,7 @@ class Game:
     def _atualizar_canos(self, velocidade_atual):
         self.frames_desde_ultimo_cano += 1
         if self.frames_desde_ultimo_cano >= INTERVALO_CANOS:
-            self.canos.append(Cano(velocidade_atual))
+            self.canos.append(Cano(velocidade_atual, self.estilo_cenario))
             self.frames_desde_ultimo_cano = 0
 
         retangulo_passaro = self.passaro.obter_retangulo()

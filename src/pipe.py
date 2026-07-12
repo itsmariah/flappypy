@@ -5,27 +5,26 @@ import pygame
 from constantes import (
     ALTURA_CHAO,
     ALTURA_TELA,
-    CAMINHO_FOLHA_CANOS,
+    ESTILOS_CANO,
     GAP_CANO,
     LARGURA_CANO,
     LARGURA_TELA,
     MARGEM_GAP,
 )
 
-TAMANHO_TILE_ORIGINAL = 32  # tile é quadrado na folha original
-AREA_TAMPA_ORIGINAL = (0, 0, TAMANHO_TILE_ORIGINAL, TAMANHO_TILE_ORIGINAL)
-AREA_CORPO_ORIGINAL = (0, TAMANHO_TILE_ORIGINAL, TAMANHO_TILE_ORIGINAL, TAMANHO_TILE_ORIGINAL)
-
 
 class Cano:
-    _tampa_original = None
-    _corpo_original = None
+    _tampa_por_estilo = {}
+    _corpo_por_estilo = {}
 
-    def __init__(self, velocidade):
-        if Cano._tampa_original is None:
-            folha = pygame.image.load(CAMINHO_FOLHA_CANOS).convert_alpha()
-            Cano._tampa_original = folha.subsurface(AREA_TAMPA_ORIGINAL)
-            Cano._corpo_original = folha.subsurface(AREA_CORPO_ORIGINAL)
+    def __init__(self, velocidade, estilo=0):
+        if estilo not in Cano._tampa_por_estilo:
+            config = ESTILOS_CANO[estilo]
+            folha = pygame.image.load(config["folha"]).convert_alpha()
+            Cano._tampa_por_estilo[estilo] = folha.subsurface(config["area_tampa"])
+            Cano._corpo_por_estilo[estilo] = folha.subsurface(config["area_corpo"])
+        tampa_original = Cano._tampa_por_estilo[estilo]
+        corpo_original = Cano._corpo_por_estilo[estilo]
 
         self.velocidade = velocidade
         self.x = LARGURA_TELA
@@ -40,13 +39,16 @@ class Cano:
 
         # topo/base não mudam depois de criado, então já preparamos as imagens
         # escaladas uma única vez aqui, em vez de recalcular a cada desenhar().
-        self.tampa_inferior = pygame.transform.scale(Cano._tampa_original, (LARGURA_CANO, LARGURA_CANO))
+        self.tampa_inferior = pygame.transform.scale(tampa_original, (LARGURA_CANO, LARGURA_CANO))
         self.tampa_superior = pygame.transform.flip(self.tampa_inferior, False, True)
-        self.corpo_superior = self._escalar_corpo(max(self.topo - LARGURA_CANO, 0))
-        self.corpo_inferior = self._escalar_corpo(max((ALTURA_TELA - self.base) - LARGURA_CANO, 0))
+        self.corpo_superior = self._escalar_corpo(corpo_original, max(self.topo - LARGURA_CANO, 0))
+        self.corpo_inferior = self._escalar_corpo(
+            corpo_original, max((ALTURA_TELA - self.base) - LARGURA_CANO, 0)
+        )
 
-    def _escalar_corpo(self, altura):
-        return pygame.transform.scale(Cano._corpo_original, (LARGURA_CANO, altura))
+    @staticmethod
+    def _escalar_corpo(corpo_original, altura):
+        return pygame.transform.scale(corpo_original, (LARGURA_CANO, altura))
 
     def atualizar(self):
         self.x -= self.velocidade

@@ -1,18 +1,20 @@
 import pygame
 
-from constantes import ALTURA_CHAO, ALTURA_TELA, CAMINHO_FOLHA_CHAO, LARGURA_TELA, LARGURA_TILE_CHAO
-
-AREA_TILE_ORIGINAL = (0, 80, 16, 32)  # grama + terra, sem decorações, na folha original
+from constantes import ALTURA_CHAO, ALTURA_TELA, ESTILOS_CHAO, LARGURA_TELA, LARGURA_TILE_CHAO
 
 
 class Ground:
-    _tile = None
+    _tile_por_estilo = {}
 
-    def __init__(self):
-        if Ground._tile is None:
-            folha = pygame.image.load(CAMINHO_FOLHA_CHAO).convert_alpha()
-            tile_original = folha.subsurface(AREA_TILE_ORIGINAL)
-            Ground._tile = pygame.transform.scale(tile_original, (LARGURA_TILE_CHAO, ALTURA_CHAO))
+    def __init__(self, estilo=0):
+        if estilo not in Ground._tile_por_estilo:
+            config = ESTILOS_CHAO[estilo]
+            folha = pygame.image.load(config["folha"]).convert_alpha()
+            tile_original = folha.subsurface(config["area_tile"])
+            Ground._tile_por_estilo[estilo] = pygame.transform.scale(
+                tile_original, (LARGURA_TILE_CHAO, ALTURA_CHAO)
+            )
+        self.tile = Ground._tile_por_estilo[estilo]
 
         self.y = ALTURA_TELA - ALTURA_CHAO
         self.x = 0
@@ -27,4 +29,4 @@ class Ground:
 
     def desenhar(self, tela):
         for x in range(int(self.x), LARGURA_TELA, LARGURA_TILE_CHAO):
-            tela.blit(Ground._tile, (x, self.y))
+            tela.blit(self.tile, (x, self.y))

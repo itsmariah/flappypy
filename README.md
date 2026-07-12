@@ -33,6 +33,7 @@ Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar 
 - Tela de configurações: volume (com botão de mutar rápido no menu), trocar nome, cor do título, zerar recorde
 - Personalização visual: pássaro (2 estilos), fundo (9 imagens) e cenário — canos + chão pareados (3 estilos), tudo trocável pela tela de configurações
 - Navegação por botões (não só teclado) nas telas de menu e game over
+- "Juice" visual: partículas ao pular, screen shake ao colidir
 
 ## Arquitetura
 
@@ -53,6 +54,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `jogador.py` | Nome do jogador: estado sendo digitado e persistência em disco |
 | `menu.py` | Telas de menu (nome, inicial, game over), botões reutilizáveis e ícones desenhados (lápis, mudo, engrenagem) |
 | `configuracoes.py` | Tela de configurações (volume, trocar nome, cor do título, zerar recorde) |
+| `efeitos.py` | "Juice" visual: partículas (`SistemaParticulas`) e tremor de tela (`Shake`) |
 
 **Decisões de design que valem destacar:**
 - Cada entidade encapsula o próprio estado e comportamento (`Bird.pousar()`, `Cano.foi_ultrapassado()`) — o `Game` nunca lê ou altera atributos internos diretamente, só chama métodos.
@@ -64,6 +66,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 - A fórmula de dificuldade progressiva vive numa função de módulo (`game.calcular_velocidade_cano`), não num método da classe `Game` — assim é testável isoladamente, sem precisar instanciar o jogo inteiro (janela, áudio, arquivos).
 - `Bird`, `Fundo`, `Cano` e `Ground` recebem um índice de "estilo" no construtor e cacheiam os sprites carregados por estilo (não só uma vez pra sempre) — permite trocar a aparência em runtime sem recarregar do disco a cada troca.
 - Nem todo estilo de cano tem um "bico" visualmente destacado (só o Style 1) — os demais reaproveitam a mesma textura do corpo como tampa (`area_tampa == area_corpo`), sem precisar de um caso especial no código de desenho.
+- O screen shake exigiu desenhar tudo numa superfície intermediária (`self.cena`) em vez de direto na tela — só assim dá pra colar o quadro final com um deslocamento aleatório sem precisar recalcular a posição de cada elemento individualmente.
 
 ## Tecnologias
 
@@ -124,8 +127,9 @@ flappypy/
 - [x] Recorde por jogador (cada nome tem seu próprio recorde salvo)
 - [x] Suíte de testes automatizados (pytest, 36 testes, headless)
 - [x] Personalização visual (pássaro, fundo, cenário canos+chão)
+- [x] "Juice" visual: partículas ao pular e screen shake ao colidir
 
-Ideias futuras: mais "juice" visual (screen shake, partículas), pausar o jogo, ranking entre jogadores. Os estilos de tile 4 e 5 do pacote não viraram opção de cenário — investigados e descartados, parecem ser texturas de plataforma/arquitetura, não de canos.
+Ideias futuras: pausar o jogo, ranking entre jogadores. Os estilos de tile 4 e 5 do pacote não viraram opção de cenário — investigados e descartados, parecem ser texturas de plataforma/arquitetura, não de canos.
 
 ## Créditos
 

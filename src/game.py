@@ -6,6 +6,7 @@ from bird import Bird
 from collision import colidiu
 from configuracoes import TelaConfiguracoes
 from constantes import (
+    ALTURA_PASSARO,
     ALTURA_TELA,
     CAMINHOS_FOLHA_PASSARO,
     CAMINHOS_FUNDO,
@@ -24,6 +25,7 @@ from constantes import (
     VELOCIDADE_CANO_INICIAL,
     VELOCIDADE_CANO_MAXIMA,
 )
+from efeitos import Shake, SistemaParticulas
 from ground import Ground
 from jogador import Jogador
 from menu import Menu
@@ -41,6 +43,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
+        self.cena = pygame.Surface((LARGURA_TELA, ALTURA_TELA))
         pygame.display.set_caption(TITULO)
         self.relogio = pygame.time.Clock()
         self.rodando = True
@@ -53,6 +56,8 @@ class Game:
         self.chao = Ground(self.estilo_cenario)
         self.jogador = Jogador()
         self.estilo_passaro = 0
+        self.particulas = SistemaParticulas()
+        self.shake = Shake()
         self.estado = ESTADO_MENU if self.jogador.tem_nome() else ESTADO_NOME
         self.origem_estado_nome = ESTADO_MENU
         self._reiniciar()
@@ -148,6 +153,7 @@ class Game:
         self.audio.tocar_pulo()
         if self.estado == ESTADO_JOGANDO:
             self.passaro.pular()
+            self.particulas.emitir(self.passaro.x, self.passaro.y + ALTURA_PASSARO // 2)
         elif self.estado == ESTADO_MENU:
             self.estado = ESTADO_JOGANDO
         elif self.estado == ESTADO_GAME_OVER:
@@ -155,6 +161,9 @@ class Game:
             self.estado = ESTADO_JOGANDO
 
     def _atualizar(self):
+        self.shake.atualizar()
+        self.particulas.atualizar()
+
         if self.estado == ESTADO_MENU:
             self.passaro.flutuar()
             self.menu.atualizar()
@@ -170,6 +179,7 @@ class Game:
             self.passaro.pousar(self.chao.y)
             self.estado = ESTADO_GAME_OVER
             self.audio.tocar_fim_de_jogo()
+            self.shake.iniciar()
         self._atualizar_canos(velocidade_atual)
 
     def _atualizar_canos(self, velocidade_atual):
@@ -185,6 +195,7 @@ class Game:
             if colidiu(retangulo_passaro, superior) or colidiu(retangulo_passaro, inferior):
                 self.estado = ESTADO_GAME_OVER
                 self.audio.tocar_fim_de_jogo()
+                self.shake.iniciar()
             elif cano.foi_ultrapassado(self.passaro.x):
                 self.placar.incrementar()
                 self.audio.tocar_ponto()
@@ -192,24 +203,27 @@ class Game:
         self.canos = [cano for cano in self.canos if not cano.fora_da_tela()]
 
     def _desenhar(self):
-        self.fundo.desenhar(self.tela)
+        self.fundo.desenhar(self.cena)
         for cano in self.canos:
-            cano.desenhar(self.tela)
-        self.passaro.desenhar(self.tela)
-        self.chao.desenhar(self.tela)
+            cano.desenhar(self.cena)
+        self.passaro.desenhar(self.cena)
+        self.particulas.desenhar(self.cena)
+        self.chao.desenhar(self.cena)
 
         if self.estado in (ESTADO_JOGANDO, ESTADO_GAME_OVER):
-            self.placar.desenhar(self.tela)
+            self.placar.desenhar(self.cena)
 
         if self.estado == ESTADO_NOME:
-            self.menu.desenhar_tela_nome(self.tela, self.jogador.nome_digitando)
+            self.menu.desenhar_tela_nome(self.cena, self.jogador.nome_digitando)
         elif self.estado == ESTADO_MENU:
             self.menu.desenhar_tela_inicial(
-                self.tela, self.jogador.nome, self.placar.recorde, self.audio.mutado
+                self.cena, self.jogador.nome, self.placar.recorde, self.audio.mutado
             )
         elif self.estado == ESTADO_GAME_OVER:
-            self.menu.desenhar_tela_fim(self.tela, self.placar.pontos, self.placar.recorde)
+            self.menu.desenhar_tela_fim(self.cena, self.placar.pontos, self.placar.recorde)
         elif self.estado == ESTADO_CONFIG:
-            self.tela_config.desenhar(self.tela, self.audio.volume, self.menu.cor_titulo_atual())
+            self.tela_config.desenhar(self.cena, self.audio.volume, self.menu.cor_titulo_atual())
 
+        self.tela.fill((0, 0, 0))
+        self.tela.blit(self.cena, self.shake.offset())
         pygame.display.flip()

@@ -23,6 +23,11 @@ class Placar:
         self.recorde = 0
         self._salvar_recorde()
 
+    @staticmethod
+    def obter_ranking():
+        recordes = Placar._carregar_todos_recordes()
+        return sorted(recordes.items(), key=lambda item: item[1], reverse=True)
+
     def _carregar_recorde(self):
         recordes = self._carregar_todos_recordes()
         return recordes.get(self.nome_jogador, 0)

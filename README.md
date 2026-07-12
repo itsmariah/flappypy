@@ -8,10 +8,11 @@
 Um clone do clássico *Flappy Bird* feito em Python com [Pygame](https://www.pygame.org/), construído do zero como projeto de estudo de arquitetura de software aplicada a jogos.
 
 <p align="center">
-  <img src="docs/screenshot-menu.png" width="23%" alt="Tela inicial" />
-  <img src="docs/screenshot-jogando.png" width="23%" alt="Jogo em andamento" />
-  <img src="docs/screenshot-gameover.png" width="23%" alt="Tela de game over" />
-  <img src="docs/screenshot-config.png" width="23%" alt="Tela de configurações" />
+  <img src="docs/screenshot-menu.png" width="18%" alt="Tela inicial" />
+  <img src="docs/screenshot-jogando.png" width="18%" alt="Jogo em andamento" />
+  <img src="docs/screenshot-gameover.png" width="18%" alt="Tela de game over" />
+  <img src="docs/screenshot-config.png" width="18%" alt="Tela de configurações" />
+  <img src="docs/screenshot-ranking.png" width="18%" alt="Tela de ranking" />
 </p>
 
 ## Sobre o projeto
@@ -35,6 +36,7 @@ Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar 
 - Navegação por botões (não só teclado) nas telas de menu e game over
 - "Juice" visual: partículas ao pular, screen shake ao colidir
 - Pausa (tecla Esc) com opção de continuar ou voltar ao menu
+- Ranking com todos os jogadores e recordes salvos, acessível clicando no recorde no menu
 
 ## Arquitetura
 
@@ -53,8 +55,9 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `audio.py` | Carregamento, volume e reprodução dos efeitos sonoros |
 | `score.py` | Contagem/exibição da pontuação e persistência do recorde por jogador (JSON) |
 | `jogador.py` | Nome do jogador: estado sendo digitado e persistência em disco |
-| `menu.py` | Telas de menu (nome, inicial, game over), botões reutilizáveis e ícones desenhados (lápis, mudo, engrenagem) |
+| `menu.py` | Telas de menu (nome, inicial, game over, pausa), botões reutilizáveis e ícones desenhados (lápis, mudo, engrenagem) |
 | `configuracoes.py` | Tela de configurações (volume, trocar nome, cor do título, zerar recorde) |
+| `ranking.py` | Tela de ranking — lista todos os jogadores e recordes salvos, do maior pro menor |
 | `efeitos.py` | "Juice" visual: partículas (`SistemaParticulas`) e tremor de tela (`Shake`) |
 
 **Decisões de design que valem destacar:**
@@ -130,8 +133,9 @@ flappypy/
 - [x] Personalização visual (pássaro, fundo, cenário canos+chão)
 - [x] "Juice" visual: partículas ao pular e screen shake ao colidir
 - [x] Pausa (Esc), com opção de continuar ou voltar ao menu
+- [x] Ranking entre jogadores (acessível clicando no recorde no menu)
 
-Ideias futuras: ranking entre jogadores. Os estilos de tile 4 e 5 do pacote não viraram opção de cenário — investigados e descartados, parecem ser texturas de plataforma/arquitetura, não de canos.
+Todas as ideias planejadas foram concluídas. Os estilos de tile 4 e 5 do pacote não viraram opção de cenário — investigados e descartados, parecem ser texturas de plataforma/arquitetura, não de canos.
 
 ## Créditos
 

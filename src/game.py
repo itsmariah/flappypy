@@ -16,6 +16,7 @@ from constantes import (
     ESTADO_MENU,
     ESTADO_NOME,
     ESTADO_PAUSADO,
+    ESTADO_RANKING,
     ESTILOS_CANO,
     FPS,
     INCREMENTO_VELOCIDADE_CANO,
@@ -31,6 +32,7 @@ from ground import Ground
 from jogador import Jogador
 from menu import Menu
 from pipe import Cano
+from ranking import TelaRanking
 from score import Placar
 
 
@@ -50,6 +52,7 @@ class Game:
         self.rodando = True
         self.menu = Menu()
         self.tela_config = TelaConfiguracoes()
+        self.tela_ranking = TelaRanking()
         self.audio = Audio()
         self.estilo_fundo = 0
         self.fundo = Fundo(self.estilo_fundo)
@@ -96,6 +99,12 @@ class Game:
                 self._processar_clique_config(evento.pos)
             elif evento.type == pygame.MOUSEBUTTONDOWN and self.estado == ESTADO_PAUSADO:
                 self._processar_clique_pausa(evento.pos)
+            elif evento.type == pygame.MOUSEBUTTONDOWN and self.estado == ESTADO_RANKING:
+                self._processar_clique_ranking(evento.pos)
+
+    def _processar_clique_ranking(self, pos):
+        if self.tela_ranking.botao_voltar.foi_clicado(pos):
+            self.estado = ESTADO_MENU
 
     def _processar_escape(self):
         if self.estado == ESTADO_JOGANDO:
@@ -121,6 +130,8 @@ class Game:
             self.audio.alternar_mudo()
         elif self.menu.config_foi_clicado(pos):
             self.estado = ESTADO_CONFIG
+        elif self.menu.recorde_foi_clicado(pos):
+            self.estado = ESTADO_RANKING
 
     def _processar_clique_config(self, pos):
         if self.tela_config.botao_voltar.foi_clicado(pos):
@@ -243,6 +254,8 @@ class Game:
             self.tela_config.desenhar(self.cena, self.audio.volume, self.menu.cor_titulo_atual())
         elif self.estado == ESTADO_PAUSADO:
             self.menu.desenhar_tela_pausa(self.cena)
+        elif self.estado == ESTADO_RANKING:
+            self.tela_ranking.desenhar(self.cena, Placar.obter_ranking())
 
         self.tela.fill((0, 0, 0))
         self.tela.blit(self.cena, self.shake.offset())

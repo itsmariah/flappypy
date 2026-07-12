@@ -66,6 +66,7 @@ class Menu:
         self.fonte_titulo = pygame.font.Font(CAMINHO_FONTE, TAMANHO_FONTE_PLACAR)
         self.fonte_instrucao = pygame.font.Font(CAMINHO_FONTE, TAMANHO_FONTE_PLACAR // 2)
         self.retangulo_nome = None
+        self.retangulo_recorde = None
         self.retangulo_titulo = None
         self.indice_cor_titulo = 0
         self.contador_pulso = 0
@@ -138,6 +139,7 @@ class Menu:
             self.retangulo_nome = retangulo
         else:
             retangulo.topright = (LARGURA_TELA - margem, margem)
+            self.retangulo_recorde = retangulo
         tela.blit(superficie, retangulo)
 
     def _desenhar_icone_lapis(self, tela, espaco=4):
@@ -151,6 +153,9 @@ class Menu:
 
     def nome_foi_clicado(self, pos):
         return self.retangulo_nome is not None and self.retangulo_nome.collidepoint(pos)
+
+    def recorde_foi_clicado(self, pos):
+        return self.retangulo_recorde is not None and self.retangulo_recorde.collidepoint(pos)
 
     def _desenhar_titulo(self, tela):
         cor = CORES_TITULO[self.indice_cor_titulo]

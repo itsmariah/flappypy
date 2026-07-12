@@ -14,14 +14,14 @@ class Audio:
     _som_ponto = None
     _som_fim_de_jogo = None
 
-    def __init__(self):
+    def __init__(self, volume=VOLUME_INICIAL, mutado=False):
         if Audio._som_pulo is None:
             Audio._som_pulo = pygame.mixer.Sound(CAMINHO_SOM_PULO)
             Audio._som_ponto = pygame.mixer.Sound(CAMINHO_SOM_PONTO)
             Audio._som_fim_de_jogo = pygame.mixer.Sound(CAMINHO_SOM_FIM_DE_JOGO)
 
-        self.volume = VOLUME_INICIAL
-        self.mutado = False
+        self.volume = volume
+        self.mutado = mutado
         self._aplicar_volume()
 
     def tocar_pulo(self):

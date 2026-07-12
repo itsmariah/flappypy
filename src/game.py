@@ -32,6 +32,7 @@ from ground import Ground
 from jogador import Jogador
 from menu import Menu
 from pipe import Cano
+from preferencias import Preferencias
 from ranking import TelaRanking
 from score import Placar
 
@@ -50,16 +51,17 @@ class Game:
         pygame.display.set_caption(TITULO)
         self.relogio = pygame.time.Clock()
         self.rodando = True
-        self.menu = Menu()
+        self.preferencias = Preferencias()
+        self.menu = Menu(self.preferencias.indice_cor_titulo)
         self.tela_config = TelaConfiguracoes()
         self.tela_ranking = TelaRanking()
-        self.audio = Audio()
-        self.estilo_fundo = 0
+        self.audio = Audio(self.preferencias.volume, self.preferencias.mutado)
+        self.estilo_fundo = self.preferencias.estilo_fundo
         self.fundo = Fundo(self.estilo_fundo)
-        self.estilo_cenario = 0
+        self.estilo_cenario = self.preferencias.estilo_cenario
         self.chao = Ground(self.estilo_cenario)
         self.jogador = Jogador()
-        self.estilo_passaro = 0
+        self.estilo_passaro = self.preferencias.estilo_passaro
         self.particulas = SistemaParticulas()
         self.shake = Shake()
         self.estado = ESTADO_MENU if self.jogador.tem_nome() else ESTADO_NOME
@@ -132,6 +134,7 @@ class Game:
             self.estado = ESTADO_CONFIG
         elif self.menu.recorde_foi_clicado(pos):
             self.estado = ESTADO_RANKING
+        self._salvar_preferencias()
 
     def _processar_clique_config(self, pos):
         if self.tela_config.botao_voltar.foi_clicado(pos):
@@ -157,6 +160,17 @@ class Game:
             self.menu.ciclar_cor_titulo()
         elif self.tela_config.botao_zerar.foi_clicado(pos):
             self.placar.zerar_recorde()
+        self._salvar_preferencias()
+
+    def _salvar_preferencias(self):
+        self.preferencias.salvar(
+            estilo_fundo=self.estilo_fundo,
+            estilo_cenario=self.estilo_cenario,
+            estilo_passaro=self.estilo_passaro,
+            indice_cor_titulo=self.menu.indice_cor_titulo,
+            volume=self.audio.volume,
+            mutado=self.audio.mutado,
+        )
 
     def _processar_clique_game_over(self, pos):
         if self.menu.botao_reiniciar.foi_clicado(pos):

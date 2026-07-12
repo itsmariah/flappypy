@@ -63,13 +63,13 @@ class Botao:
 
 
 class Menu:
-    def __init__(self):
+    def __init__(self, indice_cor_titulo=0):
         self.fonte_titulo = pygame.font.Font(CAMINHO_FONTE, TAMANHO_FONTE_PLACAR)
         self.fonte_instrucao = pygame.font.Font(CAMINHO_FONTE, TAMANHO_FONTE_PLACAR // 2)
         self.retangulo_nome = None
         self.retangulo_recorde = None
         self.retangulo_titulo = None
-        self.indice_cor_titulo = 0
+        self.indice_cor_titulo = indice_cor_titulo
         self.contador_pulso = 0
         self.botao_menu = Botao(self.fonte_instrucao, "Menu", 150, 36)
         self.botao_reiniciar = Botao(self.fonte_instrucao, "Reiniciar", 150, 36)

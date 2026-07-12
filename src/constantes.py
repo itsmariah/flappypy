@@ -99,6 +99,9 @@ ESTADO_RANKING = "ranking"
 CAMINHO_NOME_JOGADOR = os.path.join(_PASTA_RAIZ, "data", "jogador.txt")
 LIMITE_NOME = 12
 
+# Preferências
+CAMINHO_PREFERENCIAS = os.path.join(_PASTA_RAIZ, "data", "preferencias.json")
+
 # Sons
 CAMINHO_SOM_PULO = os.path.join(PASTA_SONS, "wing_flap.mp3")
 CAMINHO_SOM_PONTO = os.path.join(PASTA_SONS, "coin.wav")  # coin.mp3 tinha ~185ms de silêncio no início

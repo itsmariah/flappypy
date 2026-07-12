@@ -15,6 +15,13 @@ Um clone do clássico *Flappy Bird* feito em Python com [Pygame](https://www.pyg
   <img src="docs/screenshot-ranking.png" width="18%" alt="Tela de ranking" />
 </p>
 
+**Tudo isso é personalizável** (pássaro, fundo, cenário, cor do título) e fica salvo entre execuções:
+
+<p align="center">
+  <img src="docs/screenshot-menu-custom.png" width="27%" alt="Menu com personalização diferente" />
+  <img src="docs/screenshot-jogando-custom.png" width="27%" alt="Jogo com personalização diferente" />
+</p>
+
 ## Sobre o projeto
 
 Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar arquitetura de software: separação de responsabilidades, encapsulamento e código legível, evitando complexidade desnecessária a cada etapa. Cada funcionalidade foi construída incrementalmente — física do pássaro, colisão, canos, pontuação, estados de jogo (menu/jogando/game over) e, por fim, arte de verdade no lugar de formas geométricas.
@@ -32,7 +39,7 @@ Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar 
 - Identificação do jogador: nome digitado na primeira execução, editável a qualquer momento (clique no nome ou pela tela de configurações)
 - Personalização: cor do título alternável por clique, com dica visual pulsante
 - Tela de configurações: volume (com botão de mutar rápido no menu), trocar nome, cor do título, zerar recorde
-- Personalização visual: pássaro (2 estilos), fundo (9 imagens) e cenário — canos + chão pareados (3 estilos), tudo trocável pela tela de configurações
+- Personalização visual: pássaro (2 estilos), fundo (9 imagens) e cenário — canos + chão pareados (3 estilos), tudo trocável pela tela de configurações e **salvo entre execuções**
 - Navegação por botões (não só teclado) nas telas de menu e game over
 - "Juice" visual: partículas ao pular, screen shake ao colidir
 - Pausa (tecla Esc) com opção de continuar ou voltar ao menu
@@ -55,6 +62,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `audio.py` | Carregamento, volume e reprodução dos efeitos sonoros |
 | `score.py` | Contagem/exibição da pontuação e persistência do recorde por jogador (JSON) |
 | `jogador.py` | Nome do jogador: estado sendo digitado e persistência em disco |
+| `preferencias.py` | Persistência das escolhas de personalização (fundo, cenário, pássaro, cor do título, volume/mudo) em JSON |
 | `menu.py` | Telas de menu (nome, inicial, game over, pausa), botões reutilizáveis e ícones desenhados (lápis, mudo, engrenagem) |
 | `configuracoes.py` | Tela de configurações (volume, trocar nome, cor do título, zerar recorde) |
 | `ranking.py` | Tela de ranking — lista todos os jogadores e recordes salvos, do maior pro menor |
@@ -111,7 +119,7 @@ flappypy/
 │   ├── images/       # sprites (pássaro, canos, tiles, backgrounds)
 │   ├── sounds/        # efeitos sonoros
 │   └── fonts/          # fonte pixelada (Press Start 2P)
-├── data/               # recorde e nome do jogador salvos em disco (gerado em runtime, fora do controle de versão)
+├── data/               # recorde, nome do jogador e preferências salvos em disco (gerado em runtime, fora do controle de versão)
 ├── docs/               # screenshots usados neste README
 ├── src/                # código-fonte
 ├── tests/              # testes automatizados (pytest)
@@ -134,6 +142,7 @@ flappypy/
 - [x] "Juice" visual: partículas ao pular e screen shake ao colidir
 - [x] Pausa (Esc), com opção de continuar ou voltar ao menu
 - [x] Ranking entre jogadores (acessível clicando no recorde no menu)
+- [x] Preferências de personalização salvas entre execuções (fundo, cenário, pássaro, cor do título, volume/mudo)
 
 Todas as ideias planejadas foram concluídas. Os estilos de tile 4 e 5 do pacote não viraram opção de cenário — investigados e descartados, parecem ser texturas de plataforma/arquitetura, não de canos.
 

@@ -2,6 +2,7 @@ import os
 
 _PASTA_RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PASTA_IMAGENS = os.path.join(_PASTA_RAIZ, "assets", "images")
+PASTA_SONS = os.path.join(_PASTA_RAIZ, "assets", "sounds")
 
 # Janela
 LARGURA_TELA = 400
@@ -49,3 +50,8 @@ TAMANHO_FONTE_PLACAR = 48
 ESTADO_MENU = "menu"
 ESTADO_JOGANDO = "jogando"
 ESTADO_GAME_OVER = "game_over"
+
+# Sons
+CAMINHO_SOM_PULO = os.path.join(PASTA_SONS, "wing_flap.mp3")
+CAMINHO_SOM_PONTO = os.path.join(PASTA_SONS, "coin.wav")  # coin.mp3 tinha ~185ms de silêncio no início
+CAMINHO_SOM_FIM_DE_JOGO = os.path.join(PASTA_SONS, "game_over_arcade.mp3")

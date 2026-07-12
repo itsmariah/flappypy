@@ -39,6 +39,7 @@ O projeto segue separação de responsabilidades: cada módulo cuida de uma úni
 | `pipe.py` | Geração, movimento, desenho e detecção de "ultrapassado" de cada par de canos |
 | `ground.py` | Posição e desenho (tiled) do chão |
 | `collision.py` | Função genérica de colisão entre retângulos, reaproveitada para chão e canos |
+| `audio.py` | Carregamento e reprodução dos efeitos sonoros |
 | `score.py` | Contagem e exibição da pontuação |
 | `menu.py` | Telas de texto (inicial e game over) |
 
@@ -85,13 +86,15 @@ flappypy/
 ## Roadmap
 
 - [x] Fundo com parallax scrolling
-- [ ] Efeitos sonoros (pulo, colisão, ponto)
+- [x] Efeitos sonoros (pulo, colisão, ponto)
 - [ ] Recorde persistente entre execuções
 - [ ] Ajuste fino de física (gravidade/impulso) para uma sensação de jogo mais suave
 
 ## Créditos
 
 Os sprites (pássaro, canos e tiles de chão) são do pacote [Flappy Bird Assets](https://megacrash.itch.io/flappy-bird-assets), por **megacrash** (itch.io). Direitos de uso sujeitos aos termos da página original — consulte antes de reutilizar este repositório para outros fins.
+
+Os efeitos sonoros (pulo, ponto e game over) vieram do [Pixabay](https://pixabay.com), sob a licença da própria plataforma.
 
 ## Licença
 

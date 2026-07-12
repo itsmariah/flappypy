@@ -1,5 +1,6 @@
 import pygame
 
+from audio import Audio
 from background import Fundo
 from bird import Bird
 from collision import colidiu
@@ -27,6 +28,7 @@ class Game:
         self.relogio = pygame.time.Clock()
         self.rodando = True
         self.menu = Menu()
+        self.audio = Audio()
         self.fundo = Fundo()
         self.chao = Ground()
         self.estado = ESTADO_MENU
@@ -55,6 +57,7 @@ class Game:
                 self._processar_espaco()
 
     def _processar_espaco(self):
+        self.audio.tocar_pulo()
         if self.estado == ESTADO_JOGANDO:
             self.passaro.pular()
         elif self.estado == ESTADO_MENU:
@@ -72,6 +75,7 @@ class Game:
         if colidiu(self.passaro.obter_retangulo(), self.chao.obter_retangulo()):
             self.passaro.pousar(self.chao.y)
             self.estado = ESTADO_GAME_OVER
+            self.audio.tocar_fim_de_jogo()
         self._atualizar_canos()
 
     def _atualizar_canos(self):
@@ -86,8 +90,10 @@ class Game:
             superior, inferior = cano.obter_retangulos()
             if colidiu(retangulo_passaro, superior) or colidiu(retangulo_passaro, inferior):
                 self.estado = ESTADO_GAME_OVER
+                self.audio.tocar_fim_de_jogo()
             elif cano.foi_ultrapassado(self.passaro.x):
                 self.placar.incrementar()
+                self.audio.tocar_ponto()
 
         self.canos = [cano for cano in self.canos if not cano.fora_da_tela()]
 

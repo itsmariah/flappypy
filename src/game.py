@@ -105,6 +105,7 @@ class Game:
                 self._processar_clique_ranking(evento.pos)
 
     def _processar_clique_ranking(self, pos):
+        self.audio.tocar_clique()
         if self.tela_ranking.botao_voltar.foi_clicado(pos):
             self.estado = ESTADO_MENU
 
@@ -115,6 +116,7 @@ class Game:
             self.estado = ESTADO_JOGANDO
 
     def _processar_clique_pausa(self, pos):
+        self.audio.tocar_clique()
         if self.menu.botao_continuar.foi_clicado(pos):
             self.estado = ESTADO_JOGANDO
         elif self.menu.botao_menu.foi_clicado(pos):
@@ -122,6 +124,7 @@ class Game:
             self.estado = ESTADO_MENU
 
     def _processar_clique_menu(self, pos):
+        self.audio.tocar_clique()
         if self.menu.nome_foi_clicado(pos):
             self.jogador.iniciar_edicao()
             self.origem_estado_nome = ESTADO_MENU
@@ -137,6 +140,7 @@ class Game:
         self._salvar_preferencias()
 
     def _processar_clique_config(self, pos):
+        self.audio.tocar_clique()
         if self.tela_config.botao_zerar.foi_clicado(pos):
             if self.tela_config.solicitar_zerar():
                 self.placar.zerar_recorde()
@@ -179,6 +183,7 @@ class Game:
         )
 
     def _processar_clique_game_over(self, pos):
+        self.audio.tocar_clique()
         if self.menu.botao_reiniciar.foi_clicado(pos):
             self._reiniciar()
             self.estado = ESTADO_JOGANDO

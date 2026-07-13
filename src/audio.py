@@ -1,6 +1,7 @@
 import pygame
 
 from constantes import (
+    CAMINHO_SOM_CLIQUE,
     CAMINHO_SOM_FIM_DE_JOGO,
     CAMINHO_SOM_PONTO,
     CAMINHO_SOM_PULO,
@@ -13,12 +14,14 @@ class Audio:
     _som_pulo = None
     _som_ponto = None
     _som_fim_de_jogo = None
+    _som_clique = None
 
     def __init__(self, volume=VOLUME_INICIAL, mutado=False):
         if Audio._som_pulo is None:
             Audio._som_pulo = pygame.mixer.Sound(CAMINHO_SOM_PULO)
             Audio._som_ponto = pygame.mixer.Sound(CAMINHO_SOM_PONTO)
             Audio._som_fim_de_jogo = pygame.mixer.Sound(CAMINHO_SOM_FIM_DE_JOGO)
+            Audio._som_clique = pygame.mixer.Sound(CAMINHO_SOM_CLIQUE)
 
         self.volume = volume
         self.mutado = mutado
@@ -32,6 +35,9 @@ class Audio:
 
     def tocar_fim_de_jogo(self):
         Audio._som_fim_de_jogo.play()
+
+    def tocar_clique(self):
+        Audio._som_clique.play()
 
     def alternar_mudo(self):
         self.mutado = not self.mutado
@@ -48,5 +54,5 @@ class Audio:
 
     def _aplicar_volume(self):
         volume_efetivo = 0.0 if self.mutado else self.volume
-        for som in (Audio._som_pulo, Audio._som_ponto, Audio._som_fim_de_jogo):
+        for som in (Audio._som_pulo, Audio._som_ponto, Audio._som_fim_de_jogo, Audio._som_clique):
             som.set_volume(volume_efetivo)

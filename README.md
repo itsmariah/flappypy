@@ -40,7 +40,7 @@ Este projeto não teve como objetivo só "fazer o jogo funcionar", mas praticar 
 - Personalização: cor do título alternável por clique, com dica visual pulsante
 - Tela de configurações: volume (com botão de mutar rápido no menu), trocar nome, cor do título, zerar recorde
 - Personalização visual: pássaro (2 estilos), fundo (9 imagens) e cenário — canos + chão pareados (3 estilos), tudo trocável pela tela de configurações e **salvo entre execuções**
-- Navegação por botões (não só teclado) nas telas de menu e game over
+- Navegação por botões (não só teclado) nas telas de menu e game over, com som de clique
 - "Juice" visual: partículas ao pular, screen shake ao colidir
 - Pausa (tecla Esc) com opção de continuar ou voltar ao menu
 - Ranking com todos os jogadores e recordes salvos, acessível clicando no recorde no menu
@@ -155,7 +155,7 @@ Todas as ideias planejadas foram concluídas. Os estilos de tile 4 e 5 do pacote
 
 Os sprites (pássaro, canos e tiles de chão) são do pacote [Flappy Bird Assets](https://megacrash.itch.io/flappy-bird-assets), por **megacrash** (itch.io). Direitos de uso sujeitos aos termos da página original — consulte antes de reutilizar este repositório para outros fins.
 
-Os efeitos sonoros (pulo, ponto e game over) vieram do [Pixabay](https://pixabay.com), sob a licença da própria plataforma.
+Os efeitos sonoros (pulo, ponto, game over e clique) vieram do [Pixabay](https://pixabay.com), sob a licença da própria plataforma.
 
 A fonte usada na interface é [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P), do Google Fonts, licenciada sob a [SIL Open Font License](assets/fonts/OFL.txt).
 

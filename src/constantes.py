@@ -113,6 +113,7 @@ FRAMES_CONFIRMACAO = 180
 CAMINHO_SOM_PULO = os.path.join(PASTA_SONS, "wing_flap.mp3")
 CAMINHO_SOM_PONTO = os.path.join(PASTA_SONS, "coin.wav")  # coin.mp3 tinha ~185ms de silêncio no início
 CAMINHO_SOM_FIM_DE_JOGO = os.path.join(PASTA_SONS, "game_over_arcade.mp3")
+CAMINHO_SOM_CLIQUE = os.path.join(PASTA_SONS, "mouse_click.wav")  # mp3 original tinha ~48ms de silêncio
 VOLUME_INICIAL = 0.7
 PASSO_VOLUME = 0.1
 
